@@ -1,0 +1,7 @@
+*.log
+__pycache__/
+# Older design sources and local video production files
+/service-*.jpg
+/service-*.png
+/media/services/
+/tools/
