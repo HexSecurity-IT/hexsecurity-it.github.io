@@ -1,0 +1,15 @@
+{
+  "name": "hex-security-reports",
+  "main": "worker.mjs",
+  "compatibility_date": "2025-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": false },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "hex-security-reports", "database_id": "004572c0-9e10-4c63-8e14-636621bf81fe" }
+  ],
+  "ratelimits": [
+    { "name": "VIEW_RATE", "namespace_id": "101", "simple": { "limit": 120, "period": 60 } },
+    { "name": "LEAD_RATE", "namespace_id": "102", "simple": { "limit": 10, "period": 60 } }
+  ]
+}

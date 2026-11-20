@@ -1,4 +1,6 @@
 *.log
+.wrangler/
+.dev.vars*
 __pycache__/
 # Older design sources and local video production files
 /service-*.jpg

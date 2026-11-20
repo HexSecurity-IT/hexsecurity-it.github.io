@@ -27,6 +27,10 @@ const motionButton = document.querySelector('#motion-toggle');
 const motionSetting = window.matchMedia('(prefers-reduced-motion: reduce)');
 let paused = motionSetting.matches;
 let activeCard = null;
+let receipt;
+let sending = false;
+const receiptStatus = document.querySelector('#enquiry-status');
+const fallback = document.querySelector('#enquiry-fallback');
 
 const galleryVideos = [...document.querySelectorAll('.inline-video')];
 const visibleVideos = new Set();
@@ -94,6 +98,7 @@ cards.forEach(card => {
   card.querySelector('.offer-open').addEventListener('click', event => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    countActivity(card.dataset.slug, 'open');
     showDetails(card);
   });
 });
@@ -108,6 +113,11 @@ function showForm(preferredChannel) {
     service.value = 'General enquiry';
   }
   const actions = form.querySelector('.compose-actions');
+  if (reportingEnabled) {
+    actions.querySelector('[value="whatsapp"]').textContent = 'Send enquiry & open WhatsApp';
+    actions.querySelector('[value="gmail"]').textContent = 'Send enquiry & open Gmail';
+    form.querySelector('.send-note').textContent = 'Sending shares your name, mobile, city and selected service with Hex Security for a reply. Your messaging app then opens with a draft.';
+  }
   actions.prepend(actions.querySelector('[value="' + preferredChannel + '"]'));
   modal.setAttribute('aria-labelledby', 'form-heading');
   if (!modal.open) modal.showModal();
@@ -134,6 +144,10 @@ backButton.addEventListener('click', () => { if (activeCard) showDetails(activeC
 modal.querySelector('.close-enquiry').addEventListener('click', () => modal.close());
 modal.addEventListener('close', () => {
   activeCard = null;
+  receipt = undefined;
+  fallback.hidden = true;
+  fallback.removeAttribute('href');
+  receiptStatus.hidden = true;
   modalVideo.pause();
   modalVideo.removeAttribute('src');
   modalVideo.removeAttribute('poster');
@@ -164,8 +178,14 @@ for (const input of [form.elements.name, form.elements.city]) {
   input.addEventListener('input', () => input.setCustomValidity(''));
 }
 
-form.addEventListener('submit', event => {
+form.addEventListener('input', () => {
+  fallback.hidden = true;
+  receiptStatus.hidden = true;
+});
+
+form.addEventListener('submit', async event => {
   event.preventDefault();
+  if (sending) return;
   const name = form.elements.name.value.trim();
   const city = form.elements.city.value.trim();
   if (!name) form.elements.name.setCustomValidity('Enter your name.');
@@ -180,5 +200,34 @@ form.addEventListener('submit', event => {
   destination.search = new URLSearchParams(gmail ? {
     view: 'cm', fs: '1', to: 'info.hexsec@zohomail.in', su: 'Service enquiry: ' + service.value, body: enquiry
   } : {text: enquiry}).toString();
+  if (reportingEnabled) {
+    const selected = cards.find(card => card.querySelector('h3').textContent === service.value);
+    const fields = {name,phone:phone.value,city,service:selected?.dataset.slug || 'general',consent:true};
+    const stamp = JSON.stringify(fields);
+    if (receipt?.stamp !== stamp) receipt = {stamp, reference:crypto.randomUUID()};
+    const current = receipt;
+    sending = true;
+    fallback.hidden = true;
+    receiptStatus.textContent = 'Sending your enquiry…';
+    receiptStatus.hidden = false;
+    const buttons = [...form.querySelectorAll('button[type="submit"]')];
+    buttons.forEach(button => { button.disabled = true; });
+    try {
+      await sendWebsiteEnquiry({...fields,reference:current.reference});
+      if (!modal.open || receipt !== current) return;
+      receiptStatus.textContent = 'Hex Security received your enquiry.';
+    } catch {
+      if (modal.open && receipt === current) {
+        receiptStatus.textContent = 'We could not confirm receipt. Retry or send the draft directly.';
+        fallback.href = destination.href;
+        fallback.textContent = gmail ? 'Continue in Gmail' : 'Continue in WhatsApp';
+        fallback.hidden = false;
+      }
+      return;
+    } finally {
+      sending = false;
+      buttons.forEach(button => { button.disabled = false; });
+    }
+  }
   window.location.assign(destination.href);
 });
