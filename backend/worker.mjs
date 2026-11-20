@@ -1,3 +1,5 @@
+import {sheetReport} from './sheet-report.mjs';
+
 const site = 'https://hexsecurity-it.github.io';
 const pages = {
   home: 'Home',
@@ -57,6 +59,7 @@ function field(value, limit) {
 export default {
   async fetch(request, env) {
     const path = new URL(request.url).pathname;
+    if (path === '/sheet-report') return sheetReport(request,env);
     if (!['/activity','/enquiries'].includes(path)) return reply(404);
     if (request.headers.get('Origin') !== site) return reply(403);
     if (request.method === 'OPTIONS') return reply(204);
