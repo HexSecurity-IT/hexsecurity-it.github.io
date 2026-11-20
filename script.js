@@ -20,6 +20,8 @@ const modal = document.querySelector('#service-dialog');
 const details = document.querySelector('#details-step');
 const title = document.querySelector('#dialog-title');
 const modalVideo = document.querySelector('#dialog-video');
+const guideCaptions = document.querySelector('#dialog-captions');
+const guidePlay = document.querySelector('#guide-play');
 const form = document.querySelector('#lead-form');
 const service = document.querySelector('#lead-service');
 const backButton = document.querySelector('#back-details');
@@ -64,20 +66,36 @@ motionSetting.addEventListener('change', event => {
   setMotion(event.matches);
   if (event.matches) modalVideo.pause();
 });
-document.addEventListener('visibilitychange', syncMotion);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) modalVideo.pause();
+  syncMotion();
+});
 syncMotion();
 service.add(new Option('General enquiry', 'General enquiry'));
 
-function showDetails(card) {
+function playGuide() {
+  const card = activeCard;
+  guidePlay.hidden = true;
+  modalVideo.play().catch(error => {
+    if (error.name === 'NotAllowedError' && activeCard === card && modal.open && !details.hidden)
+      guidePlay.hidden = false;
+  });
+}
+
+guidePlay.addEventListener('click', playGuide);
+modalVideo.addEventListener('play', () => { guidePlay.hidden = true; });
+
+function showDetails(card, startVideo = true) {
   activeCard = card;
   const name = card.querySelector('h3').textContent;
   title.textContent = name;
   service.value = name;
   service.disabled = true;
   const preview = card.querySelector('video');
-  modalVideo.setAttribute('aria-label', preview.getAttribute('aria-label'));
+  modalVideo.setAttribute('aria-label', name + ' — Hindi video guide');
   if (modalVideo.getAttribute('src') !== preview.dataset.detailSrc) {
     modalVideo.poster = preview.dataset.detailPoster;
+    guideCaptions.src = preview.dataset.captions;
     modalVideo.src = preview.dataset.detailSrc;
   }
   document.querySelector('#dialog-summary').textContent = card.querySelector('.offer-copy p').textContent;
@@ -87,7 +105,9 @@ function showDetails(card) {
   modal.setAttribute('aria-labelledby', 'dialog-title');
   if (!modal.open) modal.showModal();
   syncMotion();
-  if (!paused) modalVideo.play().catch(() => {});
+  guidePlay.hidden = true;
+  if (startVideo && !paused) playGuide();
+  else if (startVideo) guidePlay.hidden = false;
   modal.scrollTop = 0;
   title.focus({preventScroll:true});
 }
@@ -130,7 +150,7 @@ document.querySelector('#start-enquiry').addEventListener('click', () => showFor
 const enquirySlug = new URLSearchParams(location.search).get('enquire');
 const requestedService = cards.find(card => card.dataset.slug === enquirySlug);
 if (requestedService) {
-  showDetails(requestedService);
+  showDetails(requestedService, false);
   showForm('whatsapp');
 }
 document.querySelectorAll('[data-enquiry]').forEach(link => {
@@ -151,6 +171,8 @@ modal.addEventListener('close', () => {
   modalVideo.pause();
   modalVideo.removeAttribute('src');
   modalVideo.removeAttribute('poster');
+  guideCaptions.removeAttribute('src');
+  guidePlay.hidden = true;
   modalVideo.load();
   syncMotion();
   form.reset();

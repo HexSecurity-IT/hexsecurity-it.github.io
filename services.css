@@ -63,3 +63,17 @@ body:has(.enquiry-dialog[open]) { overflow:hidden; }
 .service-article .demo-large { margin:24px 0; border-radius:8px; }
 .enquire-link { display:inline-block; background:#b51831; color:white; font-weight:650; padding:12px 17px; border-radius:5px; text-decoration:none; }
 .service-contact a { color:#8f1730; overflow-wrap:anywhere; }
+.play-symbol { font-size:.78em; margin-right:.25em; }
+.enquiry-dialog:has(#details-step:not([hidden])) { width:min(850px, calc(100% - 24px)); }
+.guide-player { position:relative; background:#171a20; }
+#guide-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.75rem 1rem;
+  border:1px solid #ffffff80; border-radius:30px; background:#221b20ef; color:white;
+  font:650 1rem/1.4 var(--sans); white-space:nowrap; cursor:pointer; }
+.guide-contact { display:inline-flex; gap:.35em; align-items:center; justify-content:center; }
+.guide-contact:hover, .guide-contact:focus-visible { background:#95132a; }
+.guide-contact span[aria-hidden] { margin-left:.5em; }
+#dialog-summary { margin:12px 0 0; }
+.service-article .presenter-guide { margin-bottom:14px; }
+.walkthrough-extra { margin:24px 0; padding:14px 0; border-block:1px solid #e3e1e3; }
+.walkthrough-extra summary { color:#792037; font-weight:650; cursor:pointer; }
+.walkthrough-extra .demo-large { margin:14px 0; }
