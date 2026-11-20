@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hexsecurity0369.github.io/sitemap.xml
+Sitemap: https://hexsecurity-it.github.io/sitemap.xml
