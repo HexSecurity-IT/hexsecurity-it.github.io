@@ -48,12 +48,22 @@
     glow.classList.remove('pointer-glow-visible');
   }
 
+  function fadeAfterTouch() {
+    clearTimeout(fade);
+    fade = setTimeout(hide, 160);
+  }
+
   document.addEventListener('pointermove', track, {passive: true});
   document.addEventListener('pointerdown', track, {passive: true});
   document.addEventListener('pointerup', event => {
-    if (event.pointerType !== 'mouse') fade = setTimeout(hide, 160);
+    if (event.pointerType !== 'mouse') fadeAfterTouch();
   }, {passive: true});
   document.addEventListener('pointercancel', hide, {passive: true});
+  document.addEventListener('touchmove', event => {
+    if (event.touches.length === 1) track(event.touches[0]);
+  }, {passive: true});
+  document.addEventListener('touchend', fadeAfterTouch, {passive: true});
+  document.addEventListener('touchcancel', hide, {passive: true});
   document.documentElement.addEventListener('pointerleave', hide);
   window.addEventListener('blur', hide);
   reduceMotion.addEventListener('change', hide);
