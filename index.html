@@ -270,47 +270,8 @@
       <a id="enquiry-fallback" hidden>Continue in the messaging app</a>
     </form>
   </dialog>
-  <aside id="hex-assistant" class="hex-assistant" aria-label="Hex Security website assistant" hidden>
-    <button type="button" class="hex-launch" id="hex-launch" aria-controls="hex-chat" aria-expanded="false">
-      <span class="hex-robot" aria-hidden="true"><span class="hex-antenna"></span><span class="hex-face"><i></i><i></i><b></b></span></span>
-      <span class="hex-launch-copy"><strong>Ask Hex</strong><small lang="hi">नमस्ते! मदद चाहिए?</small></span>
-    </button>
-    <section class="hex-chat" id="hex-chat" aria-labelledby="hex-chat-title" hidden>
-      <header class="hex-chat-header">
-        <div><h2 id="hex-chat-title">Hex Security assistant</h2><p>Ask in Hindi, Hinglish or English</p></div>
-        <button type="button" id="hex-close" aria-label="Close assistant">×</button>
-      </header>
-      <div class="hex-chat-body">
-        <ol class="hex-messages" id="hex-messages" aria-label="Conversation" aria-live="polite"></ol>
-        <div class="hex-actions" id="hex-actions">
-          <button type="button" data-chat-question="All services">All services</button>
-          <button type="button" data-chat-question="Billing software">Billing</button>
-          <button type="button" data-chat-question="Shop camera">Wi-Fi camera</button>
-          <button type="button" data-chat-question="Cyber security">Cyber security</button>
-        </div>
-        <div class="hex-audio-tools">
-          <button type="button" id="hex-audio" aria-pressed="false">Voice replies off</button>
-          <button type="button" id="hex-replay">Listen to reply</button>
-        </div>
-      </div>
-      <div class="hex-input-area">
-        <form id="hex-question-form">
-          <label class="hex-visually-hidden" for="hex-question">Ask about a service</label>
-          <input id="hex-question" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Type a question…">
-          <button type="submit" class="hex-send">Ask</button>
-        </form>
-        <div class="hex-mic-row" id="hex-mic-row" hidden>
-          <button type="button" id="hex-mic" aria-pressed="false" aria-describedby="hex-voice-note">🎙 Speak</button>
-          <label for="hex-language">Mic language</label>
-          <select id="hex-language"><option value="hi-IN">हिन्दी</option><option value="en-IN">English</option></select>
-        </div>
-        <p class="hex-status" id="hex-status" role="status"></p>
-        <p class="hex-voice-note" id="hex-voice-note">If you use the mic, your browser may process speech online. Keep passwords and OTPs out of chat.</p>
-      </div>
-    </section>
-  </aside>
   <script src="reporting.js"></script>
   <script src="script.js?v=assistant1"></script>
-  <script type="module" src="assistant.js?v=1"></script>
+  <script type="module" src="assistant.js?v=2"></script>
 </body>
 </html>

@@ -1,5 +1,46 @@
 import { replies } from './assistant-replies.js?v=1';
 
+const markup = `<aside id="hex-assistant" class="hex-assistant" aria-label="Hex Security website assistant" hidden>
+    <button type="button" class="hex-launch" id="hex-launch" aria-controls="hex-chat" aria-expanded="false">
+      <span class="hex-robot" aria-hidden="true"><span class="hex-antenna"></span><span class="hex-face"><i></i><i></i><b></b></span></span>
+      <span class="hex-launch-copy"><strong>Ask Hex</strong><small lang="hi">नमस्ते! मदद चाहिए?</small></span>
+    </button>
+    <section class="hex-chat" id="hex-chat" aria-labelledby="hex-chat-title" hidden>
+      <header class="hex-chat-header">
+        <div><h2 id="hex-chat-title">Hex Security assistant</h2><p>Ask in Hindi, Hinglish or English</p></div>
+        <button type="button" id="hex-close" aria-label="Close assistant">×</button>
+      </header>
+      <div class="hex-chat-body">
+        <ol class="hex-messages" id="hex-messages" aria-label="Conversation" aria-live="polite"></ol>
+        <div class="hex-actions" id="hex-actions">
+          <button type="button" data-chat-question="All services">All services</button>
+          <button type="button" data-chat-question="Billing software">Billing</button>
+          <button type="button" data-chat-question="Shop camera">Wi-Fi camera</button>
+          <button type="button" data-chat-question="Cyber security">Cyber security</button>
+        </div>
+        <div class="hex-audio-tools">
+          <button type="button" id="hex-audio" aria-pressed="false">Voice replies off</button>
+          <button type="button" id="hex-replay">Listen to reply</button>
+        </div>
+      </div>
+      <div class="hex-input-area">
+        <form id="hex-question-form">
+          <label class="hex-visually-hidden" for="hex-question">Ask about a service</label>
+          <input id="hex-question" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Type a question…">
+          <button type="submit" class="hex-send">Ask</button>
+        </form>
+        <div class="hex-mic-row" id="hex-mic-row" hidden>
+          <button type="button" id="hex-mic" aria-pressed="false" aria-describedby="hex-voice-note">🎙 Speak</button>
+          <label for="hex-language">Mic language</label>
+          <select id="hex-language"><option value="hi-IN">हिन्दी</option><option value="en-IN">English</option></select>
+        </div>
+        <p class="hex-status" id="hex-status" role="status"></p>
+        <p class="hex-voice-note" id="hex-voice-note">If you use the mic, your browser may process speech online. Keep passwords and OTPs out of chat.</p>
+      </div>
+    </section>
+  </aside>`;
+document.body.insertAdjacentHTML('beforeend', markup);
+
 const root = document.querySelector('#hex-assistant');
 const launch = root.querySelector('#hex-launch');
 const panel = root.querySelector('#hex-chat');
@@ -15,10 +56,11 @@ const voiceNote = root.querySelector('#hex-voice-note');
 const player = new Audio();
 player.preload = 'none';
 const Recognizer = window.SpeechRecognition || window.webkitSpeechRecognition;
+const enquiryDialog = document.querySelector('#service-dialog');
 let recognizer;
 let voiceEnabled = false;
 let currentReply = 'hello';
-let currentService;
+let currentService = location.pathname.match(/\/services\/([a-z-]+)\.html$/)?.[1];
 
 const topics = [
   ['billing', /\b(?:bill|bills|billing|excel|vba|invoice|invoices|hisab|register|pdf)\b|बिल|एक्सेल|इनवॉइस|रजिस्टर|हिसाब|पीडीएफ|पी डी एफ/u],
@@ -93,8 +135,10 @@ function updateActions(slug, reply) {
     return;
   }
   const links = [];
-  if (slug) links.push(actionLink('Service & demo', 'services/' + slug + '.html'));
-  links.push(actionLink('Send enquiry', slug ? '?enquire=' + slug + '#services' : '#contact', event => {
+  if (slug) links.push(actionLink('Service & demo', new URL('./services/' + slug + '.html', import.meta.url)));
+  const enquiryUrl = new URL(slug ? './?enquire=' + slug + '#services' : './#contact', import.meta.url);
+  links.push(actionLink('Send enquiry', enquiryUrl, event => {
+    if (!enquiryDialog) return;
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     setOpen(false, false);
@@ -212,7 +256,7 @@ document.addEventListener('visibilitychange', () => {
     stopVoice();
   }
 });
-document.querySelector('#service-dialog').addEventListener('toggle', event => {
+enquiryDialog?.addEventListener('toggle', event => {
   if (event.newState === 'open') setOpen(false, false);
 });
 root.hidden = false;
