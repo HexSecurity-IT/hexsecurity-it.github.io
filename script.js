@@ -43,7 +43,7 @@ function syncMotion() {
     if (shouldPlay) video.play().catch(() => {});
     else video.pause();
   }
-  motionButton.textContent = paused ? 'Play videos' : 'Pause videos';
+  motionButton.textContent = paused ? 'Play previews' : 'Pause previews';
 }
 
 function setMotion(nextPaused) {
@@ -85,7 +85,7 @@ function playGuide() {
 guidePlay.addEventListener('click', playGuide);
 modalVideo.addEventListener('play', () => { guidePlay.hidden = true; });
 
-function showDetails(card, startVideo = true) {
+function showDetails(card) {
   activeCard = card;
   const name = card.querySelector('h3').textContent;
   title.textContent = name;
@@ -106,8 +106,8 @@ function showDetails(card, startVideo = true) {
   if (!modal.open) modal.showModal();
   syncMotion();
   guidePlay.hidden = true;
-  if (startVideo && !paused) playGuide();
-  else if (startVideo) guidePlay.hidden = false;
+  if (paused) guidePlay.hidden = false;
+  else playGuide();
   modal.scrollTop = 0;
   title.focus({preventScroll:true});
 }
@@ -115,23 +115,36 @@ function showDetails(card, startVideo = true) {
 cards.forEach(card => {
   const name = card.querySelector('h3').textContent;
   service.add(new Option(name, name));
-  card.querySelector('.offer-open').addEventListener('click', event => {
-    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    countActivity(card.dataset.slug, 'open');
-    showDetails(card);
-  });
 });
 
-function showForm(preferredChannel) {
+function handleServiceLink(event, action) {
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  action();
+}
+
+for (const link of document.querySelectorAll('.offer-open, [data-show-service]')) {
+  const card = link.closest('.offer') || cards.find(item => item.dataset.slug === link.dataset.showService);
+  link.addEventListener('click', event => handleServiceLink(event, () => {
+    countActivity(card.dataset.slug, 'open');
+    showDetails(card);
+  }));
+}
+
+for (const link of document.querySelectorAll('.offer-enquire')) {
+  link.addEventListener('click', event => {
+    handleServiceLink(event, () => showForm('whatsapp', link.closest('.offer')));
+  });
+}
+
+function showForm(preferredChannel, card = activeCard) {
+  activeCard = card;
   modalVideo.pause();
   details.hidden = true;
   form.hidden = false;
   backButton.hidden = !activeCard;
-  if (!activeCard) {
-    service.disabled = false;
-    service.value = 'General enquiry';
-  }
+  service.disabled = Boolean(activeCard);
+  service.value = activeCard ? activeCard.querySelector('h3').textContent : 'General enquiry';
   const actions = form.querySelector('.compose-actions');
   if (reportingEnabled) {
     actions.querySelector('[value="whatsapp"]').textContent = 'Send enquiry & open WhatsApp';
@@ -149,15 +162,10 @@ function showForm(preferredChannel) {
 document.querySelector('#start-enquiry').addEventListener('click', () => showForm('whatsapp'));
 const enquirySlug = new URLSearchParams(location.search).get('enquire');
 const requestedService = cards.find(card => card.dataset.slug === enquirySlug);
-if (requestedService) {
-  showDetails(requestedService, false);
-  showForm('whatsapp');
-}
+if (requestedService) showForm('whatsapp', requestedService);
 document.querySelectorAll('[data-enquiry]').forEach(link => {
   link.addEventListener('click', event => {
-    event.preventDefault();
-    activeCard = null;
-    showForm(link.dataset.enquiry);
+    handleServiceLink(event, () => showForm(link.dataset.enquiry, null));
   });
 });
 backButton.addEventListener('click', () => { if (activeCard) showDetails(activeCard); });

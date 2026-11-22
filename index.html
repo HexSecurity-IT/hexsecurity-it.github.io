@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <title>Hex Security | Business IT Support, Wi-Fi Cameras &amp; Digital Services</title>
-  <meta name="description" content="Hex Security provides IT support, Wi-Fi cameras, Excel VBA billing software, e-commerce websites, SEO, Google and Meta Ads, graphic design and cybersecurity support.">
+  <title>Hex Security | IT Support, Billing &amp; Cybersecurity in Suratgarh</title>
+  <meta name="description" content="Hex Security in Suratgarh, Rajasthan offers business IT support, Wi-Fi cameras, Excel VBA billing, websites, SEO, Google and Meta Ads, graphic design and cybersecurity.">
   <link rel="canonical" href="https://hexsecurity-it.github.io/">
   <link rel="icon" type="image/jpeg" href="hex-security-logo.jpeg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hex Security">
-  <meta property="og:title" content="Hex Security | Business IT Support, Wi-Fi Cameras &amp; Digital Services">
-  <meta property="og:description" content="Hex Security provides IT support, Wi-Fi cameras, Excel VBA billing software, e-commerce websites, SEO, Google and Meta Ads, graphic design and cybersecurity support.">
+  <meta property="og:title" content="Hex Security | IT Support, Billing &amp; Cybersecurity in Suratgarh">
+  <meta property="og:description" content="Hex Security in Suratgarh, Rajasthan offers business IT support, Wi-Fi cameras, Excel VBA billing, websites, SEO, Google and Meta Ads, graphic design and cybersecurity.">
   <meta property="og:url" content="https://hexsecurity-it.github.io/">
   <meta property="og:image" content="https://hexsecurity-it.github.io/hex-security-logo.jpeg">
   <meta property="og:image:alt" content="Hex Security logo">
@@ -37,6 +37,12 @@
           "email": "info.hexsec@zohomail.in",
           "telephone": "+919680600369",
           "sameAs": ["https://www.linkedin.com/company/hex-sec/"],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Suratgarh",
+            "addressRegion": "Rajasthan",
+            "addressCountry": "IN"
+          },
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer enquiries",
@@ -48,7 +54,7 @@
           "@type": "WebPage",
           "@id": "https://hexsecurity-it.github.io/#home",
           "url": "https://hexsecurity-it.github.io/",
-          "name": "Hex Security | Business IT Support, Wi-Fi Cameras & Digital Services",
+          "name": "Hex Security | IT Support, Billing & Cybersecurity in Suratgarh",
           "isPartOf": {
             "@id": "https://hexsecurity-it.github.io/#website"
           },
@@ -61,108 +67,180 @@
   </script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="services.css?v=hindi1">
+  <link rel="stylesheet" href="home.css?v=guide1">
 </head>
-<body>
+<body class="home-page">
   <div class="site-shell">
     <header class="topbar">
-      <a class="brand" href="#home" aria-label="Hex Security home"><img class="brand-logo" src="hex-security-logo.jpeg" alt="Hex Security logo"></a>
-      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-      <nav class="nav-links" aria-label="Main navigation"><a href="#services">Services</a><a href="#about">About us</a><a href="#process">Our approach</a><a class="nav-cta" href="#contact">Talk to our team <span>↗</span></a></nav>
+      <a class="brand home-brand" href="#home">
+        <img class="brand-logo" src="hex-security-logo.jpeg" width="48" height="48" alt="">
+        <span>Hex <b>Security</b></span>
+      </a>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="home-navigation">☰</button>
+      <nav class="nav-links" id="home-navigation" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#about">About us</a>
+        <a href="#updates">LinkedIn</a>
+        <a class="nav-cta" href="#contact">Contact us</a>
+      </nav>
     </header>
 
     <main>
-      <section class="hero" id="home">
-        <div class="hero-copy">
-          <div class="eyebrow"><span class="status-dot"></span> HEX SECURITY · BUSINESS IT · DIGITAL SERVICES</div>
-          <h1>Technology for<br>business. <em>Support</em><br>that stays.</h1>
-          <p class="hero-intro">From Wi-Fi and CCTV to billing software, online shops, SEO and cyber security, Hex Security helps your business set up, sell and grow with confidence.</p>
-          <div class="hero-actions"><a class="button button-red" href="#services">View our services <span>↗</span></a><a class="button button-ghost" href="tel:+919680600369">Call +91 96806 00369 <span>↗</span></a></div>
-          <div class="hero-proof"><div class="proof-icons"><span>⌘</span><span>◉</span><span>↗</span></div><p><strong>One service partner for your business</strong><br>Setup · Support · Digital growth</p></div>
+      <section class="welcome" id="home" aria-labelledby="welcome-title">
+        <div class="welcome-inner">
+          <div class="welcome-copy">
+            <p class="location-label">Suratgarh, Rajasthan</p>
+            <h1 id="welcome-title">IT, billing and <em>digital services</em> for your business</h1>
+            <p>Get help with computers and cameras, make billing easier, sell online and protect your business accounts.</p>
+            <div class="welcome-actions">
+              <a class="home-button home-button-primary" href="#services">Find a service</a>
+              <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Enquire on WhatsApp</a>
+            </div>
+            <p class="welcome-call">Prefer to call? <a href="tel:+919680600369">+91 96806 00369</a></p>
+          </div>
+          <a class="welcome-demo" href="services/billing.html" data-show-service="billing" aria-haspopup="dialog">
+            <img src="media/home-shop.webp" width="1160" height="652" alt="Computer, receipt printer and scanner on a shop counter" fetchpriority="high">
+            <div class="welcome-caption">
+              <span class="welcome-play" aria-hidden="true">▶</span>
+              <span><strong>See how a shop creates a bill</strong><small>Excel VBA demo in Hindi</small></span>
+            </div>
+          </a>
         </div>
-        <div class="hero-art" aria-label="Animated three dimensional Hex Security shield">
-          <div class="cyber-grid"></div><div class="ring ring-one"></div><div class="ring ring-two"></div><div class="ring ring-three"></div><div class="core-shadow"></div>
-          <div class="shield-scene"><div class="shield-3d"></div><img class="shield-logo" src="hex-security-logo.jpeg" alt=""><span class="data-node node-a"></span><span class="data-node node-b"></span><span class="data-node node-c"></span></div>
-          <div class="float-panel panel-a"><span class="panel-symbol">⬡</span><b>DEFENCE IN DEPTH</b><small>Protect · Detect · Respond</small></div><div class="float-panel panel-b"><span class="panel-symbol">⌁</span><b>CONNECTED & READY</b><small>Systems built around you</small></div>
-        </div>
-        <div class="hero-bottom"><span>IT SUPPORT · DIGITAL GROWTH · CYBERSECURITY</span><a href="#services">SCROLL TO EXPLORE <span>↓</span></a></div>
       </section>
 
       <section class="services section-pad" id="services">
-        <div class="section-heading"><div><div class="eyebrow">BUSINESS SERVICES</div><h2>Get set up.<br><em>Get online. Grow.</em></h2></div><p>Practical products and support for businesses: connectivity, IT, billing systems, e-commerce, marketing and cyber security.</p></div>
-        <div class="catalog-tools"><button type="button" id="motion-toggle">Pause videos</button></div>
+        <div class="service-intro">
+          <div>
+            <h2>What do you need help with?</h2>
+            <p>Pick a service to watch a short Hindi demo, or send us an enquiry.</p>
+          </div>
+          <button type="button" id="motion-toggle">Pause previews</button>
+        </div>
         <div class="catalog">
-          <article class="offer" data-slug="it-support">
+          <article class="offer" id="service-it-support" data-slug="it-support">
             <div class="demo"><video id="video-it-support" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/it-support.webm" poster="media/walkthroughs/cards/it-support.jpg" data-detail-src="media/service-stories/it-support.mp4" data-detail-poster="media/service-stories/it-support.jpg" data-captions="media/service-stories/it-support.hi.vtt" aria-label="Run device checks, investigate a network issue and restore the connection"></video></div>
             <div class="offer-copy"><span class="offer-category">Computers & networks</span>
-              <h3>IT support</h3><p>Setup, maintenance and troubleshooting for the computers and technology your business uses every day.</p>
-              <a class="offer-open" href="services/it-support.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for IT support"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>IT support</h3><p>Keep your computers, printers and network working.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/it-support.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for IT support"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=it-support#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Computer, printer and device setup</li><li>Software installation and updates</li><li>Technical issue troubleshooting</li><li>Network and connectivity help</li></ul></template>
+            <template><ul><li>Computer, printer and device setup</li><li>Software installation and updates</li><li>Troubleshooting for slow or unreliable devices</li><li>Network and connectivity help</li></ul></template>
           </article>
-          <article class="offer" data-slug="wifi-cctv">
+          <article class="offer" id="service-wifi-cctv" data-slug="wifi-cctv">
             <div class="demo"><video id="video-wifi-cctv" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/wifi-cctv.webm" poster="media/walkthroughs/cards/wifi-cctv.jpg" data-detail-src="media/service-stories/wifi-cctv.mp4" data-detail-poster="media/service-stories/wifi-cctv.jpg" data-captions="media/service-stories/wifi-cctv.hi.vtt" aria-label="Plan coverage, pair a Wi-Fi camera and check the live shop feed"></video></div>
             <div class="offer-copy"><span class="offer-category">Camera sales & setup</span>
-              <h3>Wi-Fi cameras</h3><p>Wi-Fi products and security cameras selected for your space, with setup to get them working together.</p>
-              <a class="offer-open" href="services/wifi-cctv.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Wi-Fi cameras"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>Wi-Fi cameras</h3><p>Buy and set up cameras so you can see your shop from your phone.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/wifi-cctv.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Wi-Fi cameras"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=wifi-cctv#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Wi-Fi router and networking products</li><li>CCTV camera sales and installation</li><li>Camera placement and recording setup</li><li>Remote viewing and connectivity support</li></ul></template>
+            <template><ul><li>Wi-Fi camera sales and installation</li><li>Camera positioning and recording setup</li><li>Mobile live view and recorded footage</li><li>Wi-Fi router and connectivity support</li></ul></template>
           </article>
-          <article class="offer" data-slug="billing">
+          <article class="offer" id="service-billing" data-slug="billing">
             <div class="demo"><video id="video-billing" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/billing.webm?v=vba1" poster="media/walkthroughs/cards/billing.jpg?v=vba1" data-detail-src="media/service-stories/billing.mp4" data-detail-poster="media/service-stories/billing.jpg" data-captions="media/service-stories/billing.hi.vtt" aria-label="Excel VBA billing form, saving an invoice in the sales register and exporting its PDF"></video></div>
             <div class="offer-copy"><span class="offer-category">Retail operations</span>
-              <h3>Excel VBA billing software</h3><p>Choose an item in a custom Excel billing form, save the sale and export a PDF invoice for your customer.</p>
-              <a class="offer-open" href="services/billing.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Excel VBA billing software"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>Excel VBA billing software</h3><p>Create PDF invoices and find old bills without writing the same sale twice.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/billing.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Excel VBA billing software"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=billing#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Custom Excel VBA invoice entry form</li><li>Product selection, quantities and automatic totals</li><li>Invoice numbers and a searchable sales register</li><li>PDF invoices for sharing or printing</li></ul></template>
+            <template><ul><li>Custom Excel VBA billing form with automatic totals</li><li>Numbered invoices and a searchable sales register</li><li>PDF invoices to share or print</li><li>Optional online reports for bills and daily sales</li></ul></template>
           </article>
-          <article class="offer" data-slug="store">
+          <article class="offer" id="service-store" data-slug="store">
             <div class="demo"><video id="video-store" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/store.webm" poster="media/walkthroughs/cards/store.jpg" data-detail-src="media/service-stories/store.mp4" data-detail-poster="media/service-stories/store.jpg" data-captions="media/service-stories/store.hi.vtt" aria-label="Browse a product catalogue, add a lamp to the cart and confirm the order"></video></div>
             <div class="offer-copy"><span class="offer-category">E-commerce</span>
-              <h3>Websites & online shops</h3><p>Showcase products and sell online with a professional business website or e-commerce store.</p>
-              <a class="offer-open" href="services/store.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Websites & online shops"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>Websites & online shops</h3><p>List your products online so customers can browse and place orders.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/store.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Websites & online shops"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=store#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Business websites and product catalogues</li><li>E-commerce storefront design and setup</li><li>Mobile-friendly product pages</li><li>Enquiry, checkout and contact paths</li></ul></template>
+            <template><ul><li>Business websites and product catalogues</li><li>E-commerce storefront design and setup</li><li>Mobile-friendly product pages and listing support</li><li>Checkout and order enquiry flows</li></ul></template>
           </article>
-          <article class="offer" data-slug="marketing">
+          <article class="offer" id="service-marketing" data-slug="marketing">
             <div class="demo"><video id="video-marketing" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/marketing.webm" poster="media/walkthroughs/cards/marketing.jpg" data-detail-src="media/service-stories/marketing.mp4" data-detail-poster="media/service-stories/marketing.jpg" data-captions="media/service-stories/marketing.hi.vtt" aria-label="See a Google sponsored result, a Facebook feed ad and the product page after a click"></video></div>
             <div class="offer-copy"><span class="offer-category">Digital marketing</span>
-              <h3>SEO, Google & Meta Ads</h3><p>Build visibility online with search optimisation and paid campaigns across Google and Meta.</p>
-              <a class="offer-open" href="services/marketing.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for SEO, Google & Meta Ads"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>SEO, Google & Meta Ads</h3><p>Help customers find your shop on Google, Facebook and Instagram.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/marketing.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for SEO, Google & Meta Ads"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=marketing#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>SEO basics and on-page optimisation</li><li>Google Ads campaign setup</li><li>Facebook and Instagram (Meta) Ads</li><li>Campaign creative and performance reviews</li></ul></template>
+            <template><ul><li>Search engine optimisation for service pages</li><li>Google Ads campaign setup</li><li>Facebook and Instagram ads and creative</li><li>Campaign performance and enquiry reviews</li></ul></template>
           </article>
-          <article class="offer" data-slug="design">
+          <article class="offer" id="service-design" data-slug="design">
             <div class="demo"><video id="video-design" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/design.webm" poster="media/walkthroughs/cards/design.jpg" data-detail-src="media/service-stories/design.mp4" data-detail-poster="media/service-stories/design.jpg" data-captions="media/service-stories/design.hi.vtt" aria-label="Choose a colour palette, set a poster headline and export the finished design"></video></div>
             <div class="offer-copy"><span class="offer-category">Brand & creative</span>
-              <h3>Graphic design</h3><p>Professional visual assets to keep your brand and promotions consistent.</p>
-              <a class="offer-open" href="services/design.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Graphic design"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>Graphic design</h3><p>Get posters, catalogues and social posts that make your offer easy to understand.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/design.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Graphic design"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=design#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Business and brand graphics</li><li>Social media creatives</li><li>Digital advertisement visuals</li><li>Promotional and marketing materials</li></ul></template>
+            <template><ul><li>Posters and promotional materials</li><li>Product catalogues and brand graphics</li><li>Social media designs and ad creative</li><li>Print and digital artwork in suitable formats</li></ul></template>
           </article>
-          <article class="offer" data-slug="cybersecurity">
+          <article class="offer" id="service-cybersecurity" data-slug="cybersecurity">
             <div class="demo"><video id="video-cybersecurity" class="inline-video" width="800" height="384" muted playsinline loop preload="none" src="media/walkthroughs/cards/cybersecurity.webm" poster="media/walkthroughs/cards/cybersecurity.jpg" data-detail-src="media/service-stories/cybersecurity.mp4" data-detail-poster="media/service-stories/cybersecurity.jpg" data-captions="media/service-stories/cybersecurity.hi.vtt" aria-label="Review a device, turn on two-step verification and check its backup"></video></div>
             <div class="offer-copy"><span class="offer-category">Accounts & devices</span>
-              <h3>Cybersecurity support</h3><p>Practical guidance to improve account, device and network security and respond thoughtfully to digital incidents.</p>
-              <a class="offer-open" href="services/cybersecurity.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Cybersecurity support"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> · Service details</a>
+              <h3>Cybersecurity support</h3><p>Get help with account recovery, suspicious apps, scams and missing files.</p>
+              <div class="offer-actions">
+                <a class="offer-open" href="services/cybersecurity.html" aria-haspopup="dialog" aria-label="Watch the Hindi video and view details for Cybersecurity support"><span class="play-symbol" aria-hidden="true">▶</span> <span lang="hi">हिंदी में देखें</span> <span class="demo-language">· Hindi demo</span></a>
+                <a class="offer-enquire" href="?enquire=cybersecurity#services" aria-haspopup="dialog">Get help</a>
+              </div>
             </div>
-            <template><ul><li>Basic security posture guidance</li><li>Account, device and access protection</li><li>Incident triage and evidence preservation</li><li>Digital forensics support by agreed scope</li></ul></template>
+            <template><ul><li>Instagram and Facebook account recovery guidance through official channels</li><li>Two-step verification, phone security and scam prevention</li><li>Backup review and data recovery assessment</li><li>Digital forensics and incident documentation by agreed scope</li></ul></template>
           </article>
         </div>
-        <div class="services-note"><span>✦</span> Every engagement starts with a conversation about your goals, the scope and the right next step.</div>
+        <aside class="service-help">
+          <div><strong>Not sure which service fits?</strong><p>Tell us what you need to get done and we’ll help you choose.</p></div>
+          <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Ask our team</a>
+        </aside>
       </section>
 
-      <section class="about" id="about"><div class="about-art"><div class="about-orbit"></div><div class="about-medallion"><img src="hex-security-logo.jpeg" alt="Hex Security"><small>SECURE · BUILD · GROW</small></div><div class="about-stamp">THINK<br>SECURE <b>✳</b></div></div><div class="about-copy"><div class="eyebrow">A SECURITY FIRST MINDSET</div><h2>Strong foundations.<br><em>Clear communication.</em></h2><p>Modern businesses depend on technology at every step. Hex Security helps bring those moving parts together—supporting your computers and connectivity, building your digital presence, and helping you think carefully about security.</p><p>We explain options in plain language, agree the work before we begin, and keep the focus on practical outcomes. Whether you need one fix or a joined-up plan, we start with what matters to you.</p><a class="button button-ghost" href="#contact">Talk through your needs <span>↗</span></a></div></section>
+      <section class="home-about" id="about" aria-labelledby="about-title">
+        <div class="home-wrap about-layout">
+          <div>
+            <h2 id="about-title">Practical tech help from Suratgarh</h2>
+            <p>Hex Security works with shops and small offices. Tell us where work is getting stuck or what you want to set up. We’ll explain the options and agree the work with you.</p>
+          </div>
+          <ol id="process" class="home-process" aria-label="How it works">
+            <li><strong>Tell us what you need</strong><span>Pick a service or describe the problem.</span></li>
+            <li><strong>Agree on the work</strong><span>We’ll explain the options, scope and cost.</span></li>
+            <li><strong>Get set up</strong><span>We’ll carry out the work and show you how to use it.</span></li>
+          </ol>
+        </div>
+      </section>
 
-      <section class="approach section-pad" id="process"><div class="section-heading"><div><div class="eyebrow">A THOUGHTFUL PROCESS</div><h2>Clear from <em>day one.</em></h2></div><p>Good security and good service both start by understanding the situation before recommending a solution.</p></div><div class="steps"><article><span>01</span><h3>Understand</h3><p>We listen to your needs, current setup, priorities and constraints.</p></article><article><span>02</span><h3>Scope & plan</h3><p>We outline the suitable options, what’s included and the next steps.</p></article><article><span>03</span><h3>Deliver & support</h3><p>We carry out the agreed work, explain the result and help you move forward.</p></article></div></section>
+      <section class="home-updates" id="updates" aria-labelledby="updates-title">
+        <div class="home-wrap updates-row">
+          <div><h2 id="updates-title">Follow Hex Security on LinkedIn</h2><p>See service demos, billing examples and cybersecurity tips.</p></div>
+          <a class="home-button home-button-outline" href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Open LinkedIn Page</a>
+        </div>
+      </section>
 
-      <section class="contact" id="contact"><div class="contact-orb"></div><div class="contact-inner"><div><div class="eyebrow">LET’S TALK ABOUT YOUR PROJECT</div><h2>Make your next<br>move <em>with confidence.</em></h2><p>Need IT help, a stronger online presence or guidance on security? Reach out and tell us what you’re looking to achieve.</p></div><div class="contact-actions"><a class="button button-red" data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">Enquire via Gmail</a><a class="button button-ghost" data-enquiry="whatsapp" href="https://wa.me/919680600369" target="_blank" rel="noopener">Enquire via WhatsApp</a><div class="contact-extra"><a href="tel:+919680600369">+91 9680600369</a> · <a href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">View our location ↗</a></div></div></div></section>
+      <section class="home-contact" id="contact" aria-labelledby="contact-title">
+        <div class="home-wrap contact-layout">
+          <div><h2 id="contact-title">Tell us what you need</h2><p>Choose WhatsApp or Gmail. We’ll put your details into a message so you can send it to us.</p></div>
+          <div class="home-contact-actions">
+            <a class="home-button home-button-primary" data-enquiry="whatsapp" href="https://wa.me/919680600369">Enquire on WhatsApp</a>
+            <a class="home-button home-button-outline" data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">Enquire by email</a>
+            <a class="contact-link" href="tel:+919680600369">Call +91 96806 00369</a>
+            <a class="contact-link" href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Get directions</a>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer><a class="brand footer-brand" href="#home" aria-label="Hex Security home"><img class="brand-logo" src="hex-security-logo.jpeg" alt="Hex Security logo"></a><p>Secure. Build. Grow.</p><div class="footer-contact"><a data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">info.hexsec@zohomail.in</a><a href="tel:+919680600369">+91 9680600369</a><a href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Address &amp; directions ↗</a><a href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Hex Security on LinkedIn ↗</a></div><a href="privacy.html">Website privacy</a><span class="copyright">© <span id="year"></span> Hex Security</span></footer>
+    <footer class="home-footer"><a class="brand footer-brand" href="#home" aria-label="Hex Security home"><img class="brand-logo" src="hex-security-logo.jpeg" alt="Hex Security logo"></a><div class="footer-contact"><a data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">info.hexsec@zohomail.in</a><a href="tel:+919680600369">+91 9680600369</a><a href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Address &amp; directions ↗</a><a href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Hex Security on LinkedIn ↗</a></div><a href="privacy.html">Website privacy</a><span class="copyright">© <span id="year"></span> Hex Security</span></footer>
   </div>
   <dialog class="enquiry-dialog" id="service-dialog" aria-labelledby="dialog-title">
     <div class="dialog-bar"><span>Hex Security</span><button type="button" class="close-enquiry" aria-label="Close dialog">×</button></div>
     <div id="details-step">
+      <div class="guide-heading"><h2 id="dialog-title" tabindex="-1"></h2><p id="dialog-summary"></p></div>
       <div class="guide-player">
         <video id="dialog-video" class="demo-large" width="1120" height="630" controls playsinline preload="none" aria-label="Hindi service guide">
           <track id="dialog-captions" kind="captions" srclang="hi" label="हिन्दी">
@@ -170,9 +248,7 @@
         <button id="guide-play" type="button" lang="hi" hidden>▶&nbsp; आवाज़ के साथ चलाएँ</button>
       </div>
       <div class="sheet-body">
-        <h2 id="dialog-title" tabindex="-1"></h2>
         <button class="primary-action guide-contact" type="button" id="start-enquiry"><span lang="hi">संपर्क करें</span> · Contact us <span aria-hidden="true">→</span></button>
-        <p id="dialog-summary"></p>
         <h3>How we can help</h3><div id="dialog-details"></div>
       </div>
     </div>
@@ -192,6 +268,6 @@
     </form>
   </dialog>
   <script src="reporting.js"></script>
-  <script src="script.js?v=hindi1"></script>
+  <script src="script.js?v=guide1"></script>
 </body>
 </html>
