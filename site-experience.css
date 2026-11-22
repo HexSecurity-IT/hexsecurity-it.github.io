@@ -1,0 +1,27 @@
+.pointer-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1200;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, #f450782c 0%, #ed27501a 27%, #ed275008 52%, transparent 70%);
+  opacity: 0;
+  transition: opacity .2s linear;
+}
+
+.pointer-glow-visible { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pointer-glow { display: none; }
+}
+
+.enquiry-dialog.intro-dialog { width: min(910px, calc(100% - 24px)); }
+.intro-dialog .dialog-bar h2 { margin: 0; font: 700 1.1rem var(--display); }
+.intro-dialog video { background: #21171d; }
+.intro-actions { padding: 13px clamp(14px, 3vw, 27px); }
+.interactive-demo-link { display: inline-flex; align-items: center; gap: .55em; text-decoration: none; }
+.interactive-demo-link:hover { border-color: #a71937; }
+.offer-actions .offer-preview { position: relative; z-index: 1; color: #8f1730; font-size: .9rem; font-weight: 700; text-underline-offset: .22em; }

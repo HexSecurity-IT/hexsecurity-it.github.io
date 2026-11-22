@@ -17,9 +17,11 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 
 const cards = [...document.querySelectorAll('.offer')];
 const modal = document.querySelector('#service-dialog');
+const introDialog = document.querySelector('#intro-dialog');
 const details = document.querySelector('#details-step');
 const title = document.querySelector('#dialog-title');
 const modalVideo = document.querySelector('#dialog-video');
+const interactiveDemoLink = document.querySelector('#open-service-demo');
 const guideCaptions = document.querySelector('#dialog-captions');
 const guidePlay = document.querySelector('#guide-play');
 const form = document.querySelector('#lead-form');
@@ -38,8 +40,9 @@ const galleryVideos = [...document.querySelectorAll('.inline-video')];
 const visibleVideos = new Set();
 
 function syncMotion() {
+  const previewsVisible = !paused && !document.hidden && !modal.open && !introDialog.open;
   for (const video of galleryVideos) {
-    const shouldPlay = !paused && visibleVideos.has(video) && !document.hidden && !modal.open;
+    const shouldPlay = previewsVisible && visibleVideos.has(video);
     if (shouldPlay) video.play().catch(() => {});
     else video.pause();
   }
@@ -70,6 +73,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) modalVideo.pause();
   syncMotion();
 });
+document.addEventListener('hex-intro-change', syncMotion);
 syncMotion();
 service.add(new Option('General enquiry', 'General enquiry'));
 
@@ -92,6 +96,7 @@ function showDetails(card) {
   service.value = name;
   service.disabled = true;
   const preview = card.querySelector('video');
+  interactiveDemoLink.href = card.querySelector('.offer-preview').href;
   modalVideo.setAttribute('aria-label', name + ' — Hinglish video guide');
   if (modalVideo.getAttribute('src') !== preview.dataset.detailSrc) {
     modalVideo.poster = preview.dataset.detailPoster;
@@ -123,8 +128,8 @@ function handleServiceLink(event, action) {
   action();
 }
 
-for (const link of document.querySelectorAll('.offer-open, [data-show-service]')) {
-  const card = link.closest('.offer') || cards.find(item => item.dataset.slug === link.dataset.showService);
+for (const link of document.querySelectorAll('.offer-open')) {
+  const card = link.closest('.offer');
   link.addEventListener('click', event => handleServiceLink(event, () => {
     countActivity(card.dataset.slug, 'open');
     showDetails(card);
