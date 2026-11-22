@@ -18,13 +18,14 @@ function hasMailKey(request, env) {
   return diff === 0;
 }
 
-export async function claimMail(db, count) {
+export async function claimMail(db, count, reference = null) {
   const lease = crypto.randomUUID();
   const now = Date.now();
   const [, batch] = await db.batch([
     db.prepare(`UPDATE enquiry_mail SET lease = ?, lease_until = ?
       WHERE reference IN (SELECT reference FROM enquiry_mail
-        WHERE delivered = 0 AND lease_until <= ? ORDER BY rowid LIMIT ?)`).bind(lease, now + leaseMs, now, count),
+        WHERE delivered = 0 AND lease_until <= ? AND (? IS NULL OR reference = ?)
+        ORDER BY rowid LIMIT ?)`).bind(lease, now + leaseMs, now, reference, reference, count),
     db.prepare(`SELECT e.reference, e.received_ist, e.service, e.customer_name, e.phone, e.city,
       m.reply_to, m.message FROM enquiry_mail m JOIN enquiries e ON e.reference = m.reference
       WHERE m.lease = ? AND m.delivered = 0 ORDER BY m.rowid`).bind(lease)

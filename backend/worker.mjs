@@ -62,7 +62,7 @@ export default {
   async scheduled(_event, env) {
     await deliverZohoMail(env);
   },
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
     if (path === '/sheet-report') return sheetReport(request,env);
     if (path === '/mail-outbox') return mailOutbox(request,env,readBody);
@@ -99,9 +99,12 @@ export default {
       const message = typeof data.message === 'string' ? data.message.trim() : '';
       if ((data.email && !/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(email))
         || message.length > 800 || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/u.test(message)) return reply(400);
-      await env.DB.batch([enquiry, env.DB.prepare(`INSERT INTO enquiry_mail (reference,reply_to,message)
+      const [, queued] = await env.DB.batch([enquiry, env.DB.prepare(`INSERT INTO enquiry_mail (reference,reply_to,message)
         SELECT reference,?,? FROM enquiries WHERE reference = ? AND customer_name = ? AND phone = ? AND city = ? AND service = ?
         ON CONFLICT(reference) DO NOTHING`).bind(email,message,data.reference,name,data.phone,city,service)]);
+      if (ctx && env.ZOHO_MAIL_CONFIG && queued.meta.changes === 1) {
+        ctx.waitUntil(deliverZohoMail(env, data.reference).catch(() => console.warn('Zoho enquiry queued for retry')));
+      }
     } else {
       await enquiry.run();
     }

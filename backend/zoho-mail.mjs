@@ -45,11 +45,11 @@ function formatEnquiry(row) {
   ].join('\n');
 }
 
-export async function deliverZohoMail(env) {
+export async function deliverZohoMail(env, reference = null) {
   if (!env.ZOHO_MAIL_CONFIG) return;
   const config = JSON.parse(env.ZOHO_MAIL_CONFIG);
   if (!/^\d{5,25}$/.test(config.account_id || '')) throw new Error('Invalid Zoho Mail account ID');
-  const { lease, rows } = await claimMail(env.DB, 5);
+  const { lease, rows } = await claimMail(env.DB, reference ? 1 : 5, reference);
   if (!rows.length) return;
   const token = await getAccessToken(config);
   for (const row of rows) {
