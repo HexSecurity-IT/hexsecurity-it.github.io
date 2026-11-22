@@ -36,11 +36,14 @@
     glow.classList.add('pointer-glow-visible');
   }
 
-  function track(event) {
+  function track(event, immediate = false) {
     if (reduceMotion.matches || (event.pointerType === 'touch' && event.type === 'pointermove' && !event.buttons)) return;
     clearTimeout(fade);
     point = event;
-    if (!frame) frame = requestAnimationFrame(paint);
+    if (immediate) {
+      cancelAnimationFrame(frame);
+      paint();
+    } else if (!frame) frame = requestAnimationFrame(paint);
   }
 
   function hide() {
@@ -50,21 +53,28 @@
 
   function fadeAfterTouch() {
     clearTimeout(fade);
-    fade = setTimeout(hide, 160);
+    fade = setTimeout(hide, 300);
+  }
+
+  function trackTouch(event) {
+    if (event.touches.length === 1) track(event.touches[0], event.type === 'touchstart');
   }
 
   document.addEventListener('pointermove', track, {passive: true});
-  document.addEventListener('pointerdown', track, {passive: true});
+  document.addEventListener('pointerdown', event => track(event, true), {passive: true});
   document.addEventListener('pointerup', event => {
     if (event.pointerType !== 'mouse') fadeAfterTouch();
   }, {passive: true});
-  document.addEventListener('pointercancel', hide, {passive: true});
-  document.addEventListener('touchmove', event => {
-    if (event.touches.length === 1) track(event.touches[0]);
+  document.addEventListener('pointercancel', event => {
+    if (event.pointerType !== 'touch') hide();
   }, {passive: true});
+  document.addEventListener('touchstart', trackTouch, {passive: true});
+  document.addEventListener('touchmove', trackTouch, {passive: true});
   document.addEventListener('touchend', fadeAfterTouch, {passive: true});
   document.addEventListener('touchcancel', hide, {passive: true});
-  document.documentElement.addEventListener('pointerleave', hide);
+  document.documentElement.addEventListener('pointerleave', event => {
+    if (event.pointerType === 'mouse') hide();
+  });
   window.addEventListener('blur', hide);
   reduceMotion.addEventListener('change', hide);
 })();
