@@ -10,7 +10,7 @@ async function getAccessToken(config) {
   }
   const result = await fetch('https://accounts.zoho.in/oauth/v2/token', {
     method: 'POST',
-    redirect: 'error',
+    redirect: 'manual',
     body: new URLSearchParams({
       grant_type: 'refresh_token',
       client_id: config.client_id,
@@ -19,8 +19,9 @@ async function getAccessToken(config) {
     }),
     signal: AbortSignal.timeout(timeoutMs)
   });
+  if (!result.ok) throw new Error(`Zoho Mail authorization returned ${result.status}`);
   const token = await result.json();
-  if (!result.ok || typeof token.access_token !== 'string' || !token.access_token) {
+  if (typeof token.access_token !== 'string' || !token.access_token) {
     throw new Error('Zoho Mail authorization failed');
   }
   cachedToken = {
@@ -55,7 +56,7 @@ export async function deliverZohoMail(env, reference = null) {
   for (const row of rows) {
     const response = await fetch(`https://mail.zoho.in/api/accounts/${config.account_id}/messages`, {
       method: 'POST',
-      redirect: 'error',
+      redirect: 'manual',
       headers: { Authorization: 'Zoho-oauthtoken ' + token, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         fromAddress: inbox,
@@ -67,9 +68,12 @@ export async function deliverZohoMail(env, reference = null) {
       }),
       signal: AbortSignal.timeout(timeoutMs)
     });
-    const sent = await response.json();
-    if (!response.ok || sent.status?.code !== 200 || !sent.data?.messageId) {
+    if (!response.ok) {
       if (response.status === 401) cachedToken = undefined;
+      throw new Error(`Zoho Mail did not accept the enquiry (${response.status})`);
+    }
+    const sent = await response.json();
+    if (Number(sent.status?.code) !== 200 || !sent.data?.messageId) {
       throw new Error('Zoho Mail did not accept the enquiry');
     }
     await markMailSent(env.DB, row.reference, lease);
