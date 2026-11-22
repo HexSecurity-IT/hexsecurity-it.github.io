@@ -92,7 +92,7 @@ function showDetails(card) {
   service.value = name;
   service.disabled = true;
   const preview = card.querySelector('video');
-  modalVideo.setAttribute('aria-label', name + ' — Hindi video guide');
+  modalVideo.setAttribute('aria-label', name + ' — Hinglish video guide');
   if (modalVideo.getAttribute('src') !== preview.dataset.detailSrc) {
     modalVideo.poster = preview.dataset.detailPoster;
     guideCaptions.src = preview.dataset.captions;

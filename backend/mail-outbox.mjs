@@ -18,6 +18,26 @@ function hasMailKey(request, env) {
   return diff === 0;
 }
 
+export async function claimMail(db, count) {
+  const lease = crypto.randomUUID();
+  const now = Date.now();
+  const [, batch] = await db.batch([
+    db.prepare(`UPDATE enquiry_mail SET lease = ?, lease_until = ?
+      WHERE reference IN (SELECT reference FROM enquiry_mail
+        WHERE delivered = 0 AND lease_until <= ? ORDER BY rowid LIMIT ?)`).bind(lease, now + leaseMs, now, count),
+    db.prepare(`SELECT e.reference, e.received_ist, e.service, e.customer_name, e.phone, e.city,
+      m.reply_to, m.message FROM enquiry_mail m JOIN enquiries e ON e.reference = m.reference
+      WHERE m.lease = ? AND m.delivered = 0 ORDER BY m.rowid`).bind(lease)
+  ]);
+  return {lease, rows:batch.results};
+}
+
+export async function markMailSent(db, reference, lease) {
+  const ack = await db.prepare(`UPDATE enquiry_mail SET delivered = 1, message = '', reply_to = '', lease = NULL
+    WHERE reference = ? AND lease = ? AND delivered = 0`).bind(reference, lease).run();
+  return ack.meta.changes === 1;
+}
+
 export async function mailOutbox(request, env, readBody) {
   if (!hasMailKey(request, env)) return response(401);
   if (request.method !== 'POST') return response(405);
@@ -26,22 +46,10 @@ export async function mailOutbox(request, env, readBody) {
   if (input?.action === 'claim') {
     const count = Number(input.count);
     if (!Number.isInteger(count) || count < 1 || count > 10) return response(400);
-    const lease = crypto.randomUUID();
-    const now = Date.now();
-    const [, batch] = await env.DB.batch([
-      env.DB.prepare(`UPDATE enquiry_mail SET lease = ?, lease_until = ?
-        WHERE reference IN (SELECT reference FROM enquiry_mail
-          WHERE delivered = 0 AND lease_until <= ? ORDER BY rowid LIMIT ?)`).bind(lease, now + leaseMs, now, count),
-      env.DB.prepare(`SELECT e.reference, e.received_ist, e.service, e.customer_name, e.phone, e.city,
-        m.reply_to, m.message FROM enquiry_mail m JOIN enquiries e ON e.reference = m.reference
-        WHERE m.lease = ? AND m.delivered = 0 ORDER BY m.rowid`).bind(lease)
-    ]);
-    return response(200, {lease, rows: batch.results});
+    return response(200, await claimMail(env.DB, count));
   }
   if (input?.action === 'sent' && uuid.test(input.reference || '') && uuid.test(input.lease || '')) {
-    const ack = await env.DB.prepare(`UPDATE enquiry_mail SET delivered = 1, message = '', reply_to = '', lease = NULL
-      WHERE reference = ? AND lease = ? AND delivered = 0`).bind(input.reference, input.lease).run();
-    return response(200, {acknowledged: ack.meta.changes === 1});
+    return response(200, {acknowledged:await markMailSent(env.DB, input.reference, input.lease)});
   }
   return response(400);
 }

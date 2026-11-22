@@ -1,5 +1,6 @@
 import {sheetReport} from './sheet-report.mjs';
 import {mailOutbox} from './mail-outbox.mjs';
+import {deliverZohoMail} from './zoho-mail.mjs';
 
 const site = 'https://hexsecurity-it.github.io';
 const pages = {
@@ -58,6 +59,9 @@ function field(value, limit) {
 }
 
 export default {
+  async scheduled(_event, env) {
+    await deliverZohoMail(env);
+  },
   async fetch(request, env) {
     const path = new URL(request.url).pathname;
     if (path === '/sheet-report') return sheetReport(request,env);
