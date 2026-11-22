@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import worker from './worker.mjs';
 
 const inbox = 'info.hexsec@zohomail.in';
+const brandedSender = `Hex Security <${inbox}>`;
 const site = 'https://hexsecurity-it.github.io';
 const config = {
   account_id: '12345678', client_id: 'local-client', client_secret: 'local-secret', refresh_token: 'local-token'
@@ -57,6 +58,7 @@ function setup(t) {
   const intermediary = [];
   const outgoing = [];
   const failures = new Set();
+  const rejectedSenders = new Set();
   const accepted = Response.json;
   t.mock.method(globalThis, 'fetch', async (url, options) => {
     if (url === 'https://accounts.zoho.in/oauth/v2/token') {
@@ -65,6 +67,9 @@ function setup(t) {
     assert.equal(url, 'https://mail.zoho.in/api/accounts/12345678/messages');
     const payload = JSON.parse(options.body);
     outgoing.push(payload);
+    if (rejectedSenders.has(payload.fromAddress)) {
+      return accepted({status: {code: 400}}, {status: 400});
+    }
     return failures.has(payload.toAddress)
       ? accepted({status: {code: 503}}, {status: 503})
       : accepted({status: {code: 200}, data: {messageId: 'local-' + outgoing.length}});
@@ -79,7 +84,7 @@ function setup(t) {
     await Promise.all(intermediary.splice(0));
     return result;
   }
-  return {sql, env, submit, outgoing, failures};
+  return {sql, env, submit, outgoing, failures, rejectedSenders};
 }
 
 function lead(overrides = {}) {
@@ -99,8 +104,16 @@ test('website sends the owner notification and a separate acknowledgement to the
   assert.equal(outgoing.length, 2);
   assert.match(owner.content, /Demo Customer/);
   assert.match(owner.content, /Please call me/);
-  assert.equal(customer.fromAddress, inbox);
+  assert.equal(owner.fromAddress, inbox);
+  assert.equal(owner.mailFormat, 'plaintext');
+  assert.equal(customer.fromAddress, brandedSender);
+  assert.equal(customer.mailFormat, 'html');
+  assert.equal(customer.subject, 'Hex Security | Enquiry received · ' + input.reference.slice(0, 8).toUpperCase());
   assert.match(customer.content, /We received your website enquiry/);
+  assert.match(customer.content, /<strong[^>]*>Hex Security Team<\/strong>/);
+  for (const url of [`${site}/media/hex-security-mail-logo.gif`, `${site}/`, 'https://www.linkedin.com/company/hex-sec/', 'https://wa.me/919680600369', 'tel:+919680600369', `mailto:${inbox}`]) {
+    assert.ok(customer.content.includes(`="${url}"`));
+  }
   assert.ok(customer.content.includes(input.reference));
   assert.ok(!customer.content.includes(input.message));
   assert.ok(!customer.content.includes(input.phone));
@@ -109,6 +122,18 @@ test('website sends the owner notification and a separate acknowledgement to the
   assert.equal((await submit(input)).status, 200);
   await worker.scheduled(null, env);
   assert.equal(outgoing.length, 2);
+});
+
+test('keeps the HTML confirmation when Zoho rejects a formatted From address', async t => {
+  const {sql, submit, outgoing, rejectedSenders} = setup(t);
+  const input = lead();
+  rejectedSenders.add(brandedSender);
+  assert.equal((await submit(input)).status, 200);
+  const customerRequests = outgoing.filter(mail => mail.toAddress === input.email);
+  assert.equal(customerRequests.length, 2);
+  assert.equal(customerRequests[0].fromAddress, brandedSender);
+  assert.deepEqual(customerRequests[1], {...customerRequests[0], fromAddress: inbox});
+  assert.equal(sql.prepare('SELECT status FROM enquiry_receipts').get().status, 'sent');
 });
 
 test('retries a customer email without resending the owner notification', async t => {
