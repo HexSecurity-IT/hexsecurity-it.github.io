@@ -97,29 +97,32 @@ function lead(overrides = {}) {
 
 test('website sends the owner notification and a separate acknowledgement to the customer', async t => {
   const {sql, env, submit, outgoing} = setup(t);
-  const input = lead();
-  assert.deepEqual(await (await submit(input)).json(), {received: true, reference: input.reference});
+  const input = lead({reference: '0297e1b9-d02f-458e-af03-29d6c7a32000'});
+  const code = 'HEX-0297E1B9';
+  assert.deepEqual(await (await submit(input)).json(), {received: true, reference: input.reference, code});
   const owner = outgoing.find(mail => mail.toAddress === inbox);
   const customer = outgoing.find(mail => mail.toAddress === input.email);
   assert.equal(outgoing.length, 2);
   assert.match(owner.content, /Demo Customer/);
   assert.match(owner.content, /Please call me/);
+  assert.ok(owner.content.includes('Enquiry reference: ' + code));
   assert.equal(owner.fromAddress, inbox);
   assert.equal(owner.mailFormat, 'plaintext');
   assert.equal(customer.fromAddress, brandedSender);
   assert.equal(customer.mailFormat, 'html');
-  assert.equal(customer.subject, 'Hex Security | Enquiry received · ' + input.reference.slice(0, 8).toUpperCase());
+  assert.equal(customer.subject, 'Hex Security | Enquiry received · ' + code);
   assert.match(customer.content, /We received your website enquiry/);
   assert.match(customer.content, /<strong[^>]*>Hex Security Team<\/strong>/);
   for (const url of [`${site}/media/hex-security-mail-logo.gif`, `${site}/`, 'https://www.linkedin.com/company/hex-sec/', 'https://wa.me/919680600369', 'tel:+919680600369', `mailto:${inbox}`]) {
     assert.ok(customer.content.includes(`="${url}"`));
   }
-  assert.ok(customer.content.includes(input.reference));
+  assert.ok(customer.content.includes(code));
+  assert.ok(!customer.content.includes(input.reference));
   assert.ok(!customer.content.includes(input.message));
   assert.ok(!customer.content.includes(input.phone));
   assert.equal(sql.prepare('SELECT recipient FROM enquiry_receipts').get().recipient, '');
 
-  assert.equal((await submit(input)).status, 200);
+  assert.deepEqual(await (await submit(input)).json(), {received: true, reference: input.reference, code});
   await worker.scheduled(null, env);
   assert.equal(outgoing.length, 2);
 });

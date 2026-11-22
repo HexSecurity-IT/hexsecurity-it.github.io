@@ -2,6 +2,7 @@ import {sheetReport} from './sheet-report.mjs';
 import {mailOutbox} from './mail-outbox.mjs';
 import {deliverZohoMail} from './zoho-mail.mjs';
 import {expireCustomerReceipts, queueCustomerReceipt} from './customer-receipts.mjs';
+import {enquiryReferenceCode} from './enquiry-reference.mjs';
 
 const site = 'https://hexsecurity-it.github.io';
 const pages = {
@@ -114,6 +115,6 @@ export default {
     } else {
       await enquiry.run();
     }
-    return reply(200,{received:true,reference:data.reference});
+    return reply(200,{received:true,reference:data.reference,code:enquiryReferenceCode(data.reference)});
   }
 };

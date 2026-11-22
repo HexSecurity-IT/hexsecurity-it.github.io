@@ -1,5 +1,6 @@
 import { claimMail, markMailSent } from './mail-outbox.mjs';
 import { claimCustomerReceipts, finishCustomerReceipt } from './customer-receipts.mjs';
+import { enquiryReferenceCode } from './enquiry-reference.mjs';
 
 const inbox = 'info.hexsec@zohomail.in';
 const sender = `Hex Security <${inbox}>`;
@@ -45,12 +46,12 @@ function formatEnquiry(row) {
     'Email for replies: ' + (row.reply_to || 'Not provided'),
     'Received (IST): ' + row.received_ist, '',
     'Request: ' + (row.message || 'No additional details'), '',
-    'Reference: ' + row.reference
+    'Enquiry reference: ' + enquiryReferenceCode(row.reference)
   ].join('\n');
 }
 
 export function formatConfirmation(reference) {
-  const escapedReference = reference.replace(/[&<>"']/g, character => ({
+  const escapedReference = enquiryReferenceCode(reference).replace(/[&<>"']/g, character => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[character]);
 
@@ -85,7 +86,7 @@ export function formatConfirmation(reference) {
           <p style="margin:0 0 20px;">Need to add a detail? Just reply to this email.</p>
           <div style="padding:12px 14px;background:#fbf4f5;border-left:3px solid #a61935;border-radius:4px;">
             <div style="font-size:12px;font-weight:700;color:#8b1932;">Enquiry reference</div>
-            <div style="margin-top:3px;font-size:13px;word-break:break-all;">${escapedReference}</div>
+            <div style="margin-top:3px;font-size:16px;font-weight:700;letter-spacing:.04em;">${escapedReference}</div>
           </div>
         </td></tr>
         <tr><td style="padding:20px 24px 24px;background:#f8f4f5;border-radius:0 0 11px 11px;color:#201a20;font-size:14px;line-height:1.6;">
@@ -137,7 +138,7 @@ async function deliverOwnerNotifications(db, config, token, {lease, rows}) {
 async function deliverCustomerConfirmations(db, config, token, {lease, rows}) {
   for (const row of rows) {
     try {
-      const subject = 'Hex Security | Enquiry received · ' + row.reference.slice(0, 8).toUpperCase();
+      const subject = 'Hex Security | Enquiry received · ' + enquiryReferenceCode(row.reference);
       await sendZohoMessage(config, token, row.recipient, subject, formatConfirmation(row.reference), 'html', sender);
     } catch {
       await finishCustomerReceipt(db, row, lease, false);

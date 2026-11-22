@@ -93,6 +93,22 @@
   gap: .55rem;
 }
 
+.confirmation-message .confirmation-reference {
+  width: fit-content;
+  padding: 8px 14px;
+  border-left: 3px solid var(--brand-red);
+  border-radius: 4px;
+  background: #fcf0f3;
+  color: var(--brand-red);
+  font-size: .9rem;
+}
+
+.confirmation-reference strong {
+  display: block;
+  font-size: 1.02rem;
+  letter-spacing: .04em;
+}
+
 .confirmation-contact {
   background: #f9f7f8;
   border-left: 1px solid #e8dfe3;

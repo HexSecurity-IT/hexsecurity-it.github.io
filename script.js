@@ -255,11 +255,11 @@ form.addEventListener('submit', async event => {
   const stamp = JSON.stringify(fields);
   if (receipt?.stamp !== stamp) receipt = {stamp,reference:crypto.randomUUID()};
   const current = receipt;
-  const nextPage = whatsapp ? destination.href : './enquiry-sent.html';
+  const nextPage = () => whatsapp ? destination.href : './enquiry-sent.html' + (current.code ? '#' + current.code : '');
   receiptStatus.hidden = false;
   fallback.hidden = true;
   if (current.completed) {
-    window.location.assign(nextPage);
+    window.location.assign(nextPage());
     return;
   }
   sending = true;
@@ -267,12 +267,13 @@ form.addEventListener('submit', async event => {
   const buttons = [...form.querySelectorAll('button[type="submit"]')];
   buttons.forEach(button => { button.disabled = true; });
   try {
-    await sendWebsiteEnquiry({...fields,reference:current.reference});
+    const code = await sendWebsiteEnquiry({...fields,reference:current.reference});
     if (!modal.open || receipt !== current) return;
+    current.code = code;
     current.completed = true;
     receiptStatus.textContent = 'Enquiry sent successfully.';
     if (!whatsapp) modal.close();
-    window.location.assign(nextPage);
+    window.location.assign(nextPage());
   } catch {
     if (modal.open && receipt === current) {
       receiptStatus.textContent = 'We could not confirm receipt. Retry here or continue on WhatsApp.';

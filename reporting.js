@@ -27,4 +27,5 @@ async function sendWebsiteEnquiry(enquiry) {
   if (!response.ok) throw new Error('Enquiry not confirmed');
   const receipt = await response.json();
   if (receipt.received !== true || receipt.reference !== enquiry.reference) throw new Error('Enquiry not confirmed');
+  return typeof receipt.code === 'string' && /^HEX-[0-9A-F]{8}$/.test(receipt.code) ? receipt.code : '';
 }

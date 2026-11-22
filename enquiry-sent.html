@@ -9,7 +9,7 @@
   <link rel="icon" type="image/jpeg" href="hex-security-logo.jpeg">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="home.css?v=films1">
-  <link rel="stylesheet" href="enquiry-sent.css">
+  <link rel="stylesheet" href="enquiry-sent.css?v=enquiry-reference">
   <link rel="stylesheet" href="site-experience.css">
 </head>
 <body class="home-page confirmation-page">
@@ -27,6 +27,7 @@
         <h1 id="confirmation-title">Enquiry sent successfully</h1>
         <p>Thank you for contacting Hex Security. Our team will get in touch soon about your request.</p>
         <p>If you shared your email address, look for a confirmation from Hex Security.</p>
+        <p class="confirmation-reference" hidden>Enquiry reference <strong></strong></p>
         <a class="home-button home-button-primary" href="./"><span aria-hidden="true">←</span> Back to website</a>
       </section>
       <section class="confirmation-contact" aria-labelledby="confirmation-contact-title">
@@ -44,6 +45,14 @@
     <a href="mailto:info.hexsec@zohomail.in">info.hexsec@zohomail.in</a>
     <a href="privacy.html">Website privacy</a>
   </footer>
+  <script>
+    const enquiryCode = location.hash.slice(1);
+    if (/^HEX-[0-9A-F]{8}$/.test(enquiryCode)) {
+      const reference = document.querySelector('.confirmation-reference');
+      reference.querySelector('strong').textContent = enquiryCode;
+      reference.hidden = false;
+    }
+  </script>
   <script src="site-experience.js?v=touch2" defer></script>
 </body>
 </html>
