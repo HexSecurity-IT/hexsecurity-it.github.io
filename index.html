@@ -67,7 +67,7 @@
   </script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="services.css?v=films1">
-  <link rel="stylesheet" href="home.css?v=studio1">
+  <link rel="stylesheet" href="home.css?v=scroll1">
   <link rel="stylesheet" href="assistant.css?v=1">
 </head>
 <body class="home-page">
@@ -112,14 +112,14 @@
 
       <section class="services section-pad" id="services">
         <div class="service-intro">
-          <div>
-            <h2>What do you need help with?</h2>
+          <div data-scroll-reveal="left">
+            <h2>What do you need <span class="scroll-glow">help with?</span></h2>
             <p>Pick a service to watch a short Hinglish demo, or send us an enquiry.</p>
           </div>
           <button type="button" id="motion-toggle">Pause previews</button>
         </div>
         <div class="catalog">
-          <article class="offer" id="service-it-support" data-slug="it-support">
+          <article class="offer" id="service-it-support" data-slug="it-support" data-scroll-reveal="left">
             <div class="demo"><video id="video-it-support" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/it-support-preview.webm" poster="media/service-films/it-support.jpg" data-detail-src="media/service-films/it-support.mp4?v=hinglish1" data-detail-poster="media/service-films/it-support.jpg" data-captions="media/service-films/it-support.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Printer & network checks</span></div>
             <div class="offer-copy"><span class="offer-category">Computers & networks</span>
               <h3>IT support</h3><p>Keep your computers, printers and network working.</p>
@@ -130,7 +130,7 @@
             </div>
             <template><ul><li>Computer, printer and device setup</li><li>Software installation and updates</li><li>Troubleshooting for slow or unreliable devices</li><li>Network and connectivity help</li></ul></template>
           </article>
-          <article class="offer" id="service-wifi-cctv" data-slug="wifi-cctv">
+          <article class="offer" id="service-wifi-cctv" data-slug="wifi-cctv" data-scroll-reveal="right">
             <div class="demo"><video id="video-wifi-cctv" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/wifi-cctv-preview.webm" poster="media/service-films/wifi-cctv.jpg" data-detail-src="media/service-films/wifi-cctv.mp4?v=hinglish1" data-detail-poster="media/service-films/wifi-cctv.jpg" data-captions="media/service-films/wifi-cctv.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Camera coverage & live view</span></div>
             <div class="offer-copy"><span class="offer-category">Camera sales & setup</span>
               <h3>Wi-Fi cameras</h3><p>Buy and set up cameras so you can see your shop from your phone.</p>
@@ -141,7 +141,7 @@
             </div>
             <template><ul><li>Wi-Fi camera sales and installation</li><li>Camera positioning and recording setup</li><li>Mobile live view and recorded footage</li><li>Wi-Fi router and connectivity support</li></ul></template>
           </article>
-          <article class="offer" id="service-billing" data-slug="billing">
+          <article class="offer" id="service-billing" data-slug="billing" data-scroll-reveal="left">
             <div class="demo"><video id="video-billing" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/billing-preview.webm?v=hinglish1" poster="media/service-films/billing.jpg?v=hinglish1" data-detail-src="media/service-films/billing.mp4?v=hinglish1" data-detail-poster="media/service-films/billing.jpg?v=hinglish1" data-captions="media/service-films/billing.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Invoice, PDF & sales report</span></div>
             <div class="offer-copy"><span class="offer-category">Retail operations</span>
               <h3>Excel VBA billing software</h3><p>Bill multiple products in Excel, share a PDF and find past sales by invoice number.</p>
@@ -152,7 +152,7 @@
             </div>
             <template><ul><li>Custom Excel VBA billing form with automatic totals</li><li>Numbered invoices and a searchable sales register</li><li>PDF invoices to share or print</li><li>Optional online reports for bills and daily sales</li></ul></template>
           </article>
-          <article class="offer" id="service-store" data-slug="store">
+          <article class="offer" id="service-store" data-slug="store" data-scroll-reveal="right">
             <div class="demo"><video id="video-store" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/store-preview.webm" poster="media/service-films/store.jpg" data-detail-src="media/service-films/store.mp4?v=hinglish1" data-detail-poster="media/service-films/store.jpg" data-captions="media/service-films/store.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Site map & online checkout</span></div>
             <div class="offer-copy"><span class="offer-category">E-commerce</span>
               <h3>Websites & online shops</h3><p>List your products online so customers can browse and place orders.</p>
@@ -163,7 +163,7 @@
             </div>
             <template><ul><li>Site maps, business websites and product catalogues</li><li>E-commerce storefront design and setup</li><li>Mobile-friendly product pages and listing support</li><li>Checkout and order enquiry flows</li></ul></template>
           </article>
-          <article class="offer" id="service-marketing" data-slug="marketing">
+          <article class="offer" id="service-marketing" data-slug="marketing" data-scroll-reveal="left">
             <div class="demo"><video id="video-marketing" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/marketing-preview.webm" poster="media/service-films/marketing.jpg" data-detail-src="media/service-films/marketing.mp4?v=hinglish1" data-detail-poster="media/service-films/marketing.jpg" data-captions="media/service-films/marketing.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Reels & YouTube ads</span></div>
             <div class="offer-copy"><span class="offer-category">Digital marketing</span>
               <h3>SEO, Google & Meta Ads</h3><p>Help customers find your shop on Google, YouTube, Facebook and Instagram.</p>
@@ -174,7 +174,7 @@
             </div>
             <template><ul><li>Search engine optimisation for service pages</li><li>Google Ads campaign setup</li><li>Facebook and Instagram Reels and ad creative</li><li>YouTube video ad campaign setup</li><li>Campaign performance and enquiry reviews</li></ul></template>
           </article>
-          <article class="offer" id="service-design" data-slug="design">
+          <article class="offer" id="service-design" data-slug="design" data-scroll-reveal="right">
             <div class="demo"><video id="video-design" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/design-preview.webm?v=hinglish1" poster="media/service-films/design.jpg?v=hinglish1" data-detail-src="media/service-films/design.mp4?v=hinglish1" data-detail-poster="media/service-films/design.jpg?v=hinglish1" data-captions="media/service-films/design.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Logo, poster & social creative</span></div>
             <div class="offer-copy"><span class="offer-category">Brand & creative</span>
               <h3>Graphic design</h3><p>Get posters, catalogues and social posts that make your offer easy to understand.</p>
@@ -185,7 +185,7 @@
             </div>
             <template><ul><li>Posters and promotional materials</li><li>Product catalogues and brand graphics</li><li>Social media designs and ad creative</li><li>Print and digital artwork in suitable formats</li></ul></template>
           </article>
-          <article class="offer" id="service-cybersecurity" data-slug="cybersecurity">
+          <article class="offer" id="service-cybersecurity" data-slug="cybersecurity" data-scroll-reveal="left">
             <div class="demo"><video id="video-cybersecurity" class="inline-video" width="840" height="472" muted playsinline loop preload="none" src="media/service-films/cybersecurity-preview.webm" poster="media/service-films/cybersecurity.jpg" data-detail-src="media/service-films/cybersecurity.mp4?v=hinglish1" data-detail-poster="media/service-films/cybersecurity.jpg" data-captions="media/service-films/cybersecurity.hi.vtt?v=hinglish1" aria-hidden="true"></video><span class="service-cover-label">Account security & forensics</span></div>
             <div class="offer-copy"><span class="offer-category">Accounts & devices</span>
               <h3>Cybersecurity support</h3><p>Get help with account recovery, suspicious apps, scams and missing files.</p>
@@ -197,7 +197,7 @@
             <template><ul><li>Instagram and Facebook account recovery guidance through official channels</li><li>Two-step verification, phone security and scam prevention</li><li>Backup review and data recovery assessment</li><li>Digital forensics and incident documentation by agreed scope</li></ul></template>
           </article>
         </div>
-        <aside class="service-help">
+        <aside class="service-help" data-scroll-reveal="right">
           <div><strong>Not sure which service fits?</strong><p>Tell us what you need to get done and we’ll help you choose.</p></div>
           <a class="home-button home-button-outline" data-enquiry="website" href="#contact">Ask our team</a>
         </aside>
@@ -205,11 +205,11 @@
 
       <section class="home-about" id="about" aria-labelledby="about-title">
         <div class="home-wrap about-layout">
-          <div>
-            <h2 id="about-title">Practical tech help from Suratgarh</h2>
+          <div data-scroll-reveal="left">
+            <h2 id="about-title">Practical tech help from <span class="scroll-glow">Suratgarh</span></h2>
             <p>Hex Security works with shops and small offices. Tell us where work is getting stuck or what you want to set up. We’ll explain the options and agree the work with you.</p>
           </div>
-          <ol id="process" class="home-process" aria-label="How it works">
+          <ol id="process" class="home-process" aria-label="How it works" data-scroll-reveal="right">
             <li><strong>Tell us what you need</strong><span>Pick a service or describe the problem.</span></li>
             <li><strong>Agree on the work</strong><span>We’ll explain the options, scope and cost.</span></li>
             <li><strong>Get set up</strong><span>We’ll carry out the work and show you how to use it.</span></li>
@@ -219,15 +219,15 @@
 
       <section class="home-updates" id="updates" aria-labelledby="updates-title">
         <div class="home-wrap updates-row">
-          <div><h2 id="updates-title">Follow Hex Security on LinkedIn</h2><p>See service demos, billing examples and cybersecurity tips.</p></div>
-          <a class="home-button home-button-outline" href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Open LinkedIn Page</a>
+          <div data-scroll-reveal="left"><h2 id="updates-title">Follow Hex Security on LinkedIn</h2><p>See service demos, billing examples and cybersecurity tips.</p></div>
+          <a class="home-button home-button-outline" href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer" data-scroll-reveal="right">Open LinkedIn Page</a>
         </div>
       </section>
 
       <section class="home-contact" id="contact" aria-labelledby="contact-title">
         <div class="home-wrap contact-layout">
-          <div><h2 id="contact-title">Tell us what you need</h2><p>Send your enquiry right here. Share your number so our team can get back to you.</p></div>
-          <div class="home-contact-actions">
+          <div data-scroll-reveal="left"><h2 id="contact-title">Tell us <span class="scroll-glow">what you need</span></h2><p>Send your enquiry right here. Share your number so our team can get back to you.</p></div>
+          <div class="home-contact-actions" data-scroll-reveal="right">
             <a class="home-button home-button-primary" data-enquiry="website" href="mailto:info.hexsec@zohomail.in">Send an enquiry</a>
             <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Use WhatsApp</a>
             <a class="contact-link" href="tel:+919680600369">Call +91 96806 00369</a>
@@ -273,6 +273,7 @@
   </dialog>
   <script src="reporting.js"></script>
   <script src="script.js?v=confirmation1"></script>
+  <script src="scroll-reveal.js" defer></script>
   <script type="module" src="assistant.js?v=2"></script>
 </body>
 </html>

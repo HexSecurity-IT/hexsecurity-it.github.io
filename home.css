@@ -262,6 +262,44 @@
 #dialog-summary { font-size: .94rem; line-height: 1.45; color: var(--muted-ink); margin: 0; }
 .home-page #details-step .sheet-body { padding-top: 16px; }
 
+.scroll-glow {
+  color: var(--brand-red);
+  text-shadow: 0 1px #d798a750, 0 0 calc(12px + 14px * var(--entry-remaining, 0)) #ca1e4b4a;
+}
+
+.home-contact .scroll-glow {
+  color: #ffc3d2;
+  text-shadow: 0 1px #f1609280, 0 0 calc(12px + 14px * var(--entry-remaining, 0)) #fa5984b0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .has-scroll-motion [data-scroll-reveal] {
+    --entry-distance: clamp(32px, 8vw, 134px);
+    --entry-remaining: var(--scroll-away, 0);
+    --entry-offset: var(--entry-distance);
+    --entry-angle: 18deg;
+    opacity: calc(1 - .42 * var(--entry-remaining));
+    transform:
+      perspective(900px)
+      translate3d(calc(var(--entry-offset) * var(--entry-remaining)), calc(22px * var(--entry-remaining) + var(--card-lift, 0px)), 0)
+      rotateY(calc(var(--entry-angle) * var(--entry-remaining)));
+  }
+
+  .has-scroll-motion [data-scroll-reveal="left"] {
+    --entry-offset: calc(-1 * var(--entry-distance));
+    --entry-angle: -18deg;
+  }
+
+  .has-scroll-motion [data-scroll-reveal]:focus-within,
+  .has-scroll-motion [data-scroll-reveal]:focus-visible {
+    --entry-remaining: 0;
+  }
+
+  .has-scroll-motion .offer {
+    transition: border-color .2s, box-shadow .2s;
+  }
+}
+
 @media (min-width: 1110px) {
   .home-page .catalog { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -269,7 +307,8 @@
 @media (min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .welcome-demo { transform: perspective(1200px) rotateY(-5deg) rotateX(2deg); }
   .welcome-demo:hover, .welcome-demo:focus-visible { transform: perspective(1200px) rotateY(0) translateY(-5px); }
-  .home-page .offer:hover { transform: translateY(-4px); }
+  .home-page .offer:hover { --card-lift: -4px; }
+  :root:not(.has-scroll-motion) .home-page .offer:hover { transform: translateY(-4px); }
 }
 
 @media (max-width: 800px) {
