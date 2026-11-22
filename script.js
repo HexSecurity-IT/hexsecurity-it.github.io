@@ -133,7 +133,7 @@ for (const link of document.querySelectorAll('.offer-open, [data-show-service]')
 
 for (const link of document.querySelectorAll('.offer-enquire')) {
   link.addEventListener('click', event => {
-    handleServiceLink(event, () => showForm('whatsapp', link.closest('.offer')));
+    handleServiceLink(event, () => showForm('website', link.closest('.offer')));
   });
 }
 
@@ -146,12 +146,12 @@ function showForm(preferredChannel, card = activeCard) {
   service.disabled = Boolean(activeCard);
   service.value = activeCard ? activeCard.querySelector('h3').textContent : 'General enquiry';
   const actions = form.querySelector('.compose-actions');
-  if (reportingEnabled) {
-    actions.querySelector('[value="whatsapp"]').textContent = 'Send enquiry & open WhatsApp';
-    actions.querySelector('[value="gmail"]').textContent = 'Send enquiry & open Gmail';
-    form.querySelector('.send-note').textContent = 'Sending shares your name, mobile, city and selected service with Hex Security for a reply. Your messaging app then opens with a draft.';
+  for (const button of actions.querySelectorAll('button')) {
+    const primary = button.value === preferredChannel;
+    button.classList.toggle('primary-action', primary);
+    button.classList.toggle('secondary-action', !primary);
+    if (primary) actions.prepend(button);
   }
-  actions.prepend(actions.querySelector('[value="' + preferredChannel + '"]'));
   modal.setAttribute('aria-labelledby', 'form-heading');
   if (!modal.open) modal.showModal();
   syncMotion();
@@ -159,10 +159,13 @@ function showForm(preferredChannel, card = activeCard) {
   form.elements.name.focus({preventScroll:true});
 }
 
-document.querySelector('#start-enquiry').addEventListener('click', () => showForm('whatsapp'));
+document.querySelector('#start-enquiry').addEventListener('click', () => showForm('website'));
 const enquirySlug = new URLSearchParams(location.search).get('enquire');
 const requestedService = cards.find(card => card.dataset.slug === enquirySlug);
-if (requestedService) showForm('whatsapp', requestedService);
+if (requestedService) showForm('website', requestedService);
+document.addEventListener('hex-enquiry', event => {
+  showForm('website', cards.find(card => card.dataset.slug === event.detail) || null);
+});
 document.querySelectorAll('[data-enquiry]').forEach(link => {
   link.addEventListener('click', event => {
     handleServiceLink(event, () => showForm(link.dataset.enquiry, null));
@@ -223,41 +226,56 @@ form.addEventListener('submit', async event => {
   if (!/^[0-9]{10}$/.test(phone.value)) phone.setCustomValidity('Enter exactly 10 digits without +91.');
   if (!form.reportValidity()) return;
 
+  const email = form.elements.email.value.trim();
+  const message = form.elements.message.value.trim();
   const enquiry = ['Hello Hex Security,', '', 'I would like to enquire about ' + service.value + '.',
-    '', 'Name: ' + name, 'Mobile: +91 ' + phone.value, 'City: ' + city].join('\n');
-  const gmail = event.submitter?.value === 'gmail';
-  const destination = new URL(gmail ? 'https://mail.google.com/mail/' : 'https://wa.me/919680600369');
-  destination.search = new URLSearchParams(gmail ? {
-    view: 'cm', fs: '1', to: 'info.hexsec@zohomail.in', su: 'Service enquiry: ' + service.value, body: enquiry
-  } : {text: enquiry}).toString();
-  if (reportingEnabled) {
-    const selected = cards.find(card => card.querySelector('h3').textContent === service.value);
-    const fields = {name,phone:phone.value,city,service:selected?.dataset.slug || 'general',consent:true};
-    const stamp = JSON.stringify(fields);
-    if (receipt?.stamp !== stamp) receipt = {stamp, reference:crypto.randomUUID()};
-    const current = receipt;
-    sending = true;
-    fallback.hidden = true;
-    receiptStatus.textContent = 'Sending your enquiry…';
-    receiptStatus.hidden = false;
-    const buttons = [...form.querySelectorAll('button[type="submit"]')];
-    buttons.forEach(button => { button.disabled = true; });
-    try {
-      await sendWebsiteEnquiry({...fields,reference:current.reference});
-      if (!modal.open || receipt !== current) return;
-      receiptStatus.textContent = 'Hex Security received your enquiry.';
-    } catch {
-      if (modal.open && receipt === current) {
-        receiptStatus.textContent = 'We could not confirm receipt. Retry or send the draft directly.';
-        fallback.href = destination.href;
-        fallback.textContent = gmail ? 'Continue in Gmail' : 'Continue in WhatsApp';
-        fallback.hidden = false;
-      }
+    '', 'Name: ' + name, 'Mobile: +91 ' + phone.value, 'City: ' + city];
+  if (email) enquiry.push('Reply email: ' + email);
+  if (message) enquiry.push('', message);
+  const destination = new URL('https://wa.me/919680600369');
+  destination.searchParams.set('text', enquiry.join('\n'));
+  const whatsapp = event.submitter?.value === 'whatsapp';
+  if (!reportingEnabled) {
+    if (whatsapp) {
+      window.location.assign(destination.href);
       return;
-    } finally {
-      sending = false;
-      buttons.forEach(button => { button.disabled = false; });
     }
+    receiptStatus.textContent = 'Direct enquiries work on the live Hex Security website.';
+    receiptStatus.hidden = false;
+    return;
   }
-  window.location.assign(destination.href);
+
+  const selected = cards.find(card => card.querySelector('h3').textContent === service.value);
+  const fields = {name,phone:phone.value,city,email,message,service:selected?.dataset.slug || 'general',consent:true,delivery:'website'};
+  const stamp = JSON.stringify(fields);
+  if (receipt?.stamp !== stamp) receipt = {stamp,reference:crypto.randomUUID()};
+  const current = receipt;
+  receiptStatus.hidden = false;
+  fallback.hidden = true;
+  if (current.completed) {
+    receiptStatus.textContent = 'Hex Security received your enquiry. Our team will get back to you.';
+    if (whatsapp) window.location.assign(destination.href);
+    return;
+  }
+  sending = true;
+  receiptStatus.textContent = 'Sending your enquiry…';
+  const buttons = [...form.querySelectorAll('button[type="submit"]')];
+  buttons.forEach(button => { button.disabled = true; });
+  try {
+    await sendWebsiteEnquiry({...fields,reference:current.reference});
+    if (!modal.open || receipt !== current) return;
+    current.completed = true;
+    receiptStatus.textContent = 'Hex Security received your enquiry. Our team will get back to you.';
+    if (whatsapp) window.location.assign(destination.href);
+  } catch {
+    if (modal.open && receipt === current) {
+      receiptStatus.textContent = 'We could not confirm receipt. Retry here or continue on WhatsApp.';
+      fallback.href = destination.href;
+      fallback.textContent = 'Continue on WhatsApp';
+      fallback.hidden = false;
+    }
+  } finally {
+    sending = false;
+    buttons.forEach(button => { button.disabled = false; });
+  }
 });

@@ -66,8 +66,9 @@
     }
   </script>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="services.css?v=hindi1">
+  <link rel="stylesheet" href="services.css?v=enquiry2">
   <link rel="stylesheet" href="home.css?v=guide1">
+  <link rel="stylesheet" href="assistant.css?v=1">
 </head>
 <body class="home-page">
   <div class="site-shell">
@@ -94,7 +95,7 @@
             <p>Get help with computers and cameras, make billing easier, sell online and protect your business accounts.</p>
             <div class="welcome-actions">
               <a class="home-button home-button-primary" href="#services">Find a service</a>
-              <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Enquire on WhatsApp</a>
+              <a class="home-button home-button-outline" data-enquiry="website" href="#contact">Send an enquiry</a>
             </div>
             <p class="welcome-call">Prefer to call? <a href="tel:+919680600369">+91 96806 00369</a></p>
           </div>
@@ -197,7 +198,7 @@
         </div>
         <aside class="service-help">
           <div><strong>Not sure which service fits?</strong><p>Tell us what you need to get done and we’ll help you choose.</p></div>
-          <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Ask our team</a>
+          <a class="home-button home-button-outline" data-enquiry="website" href="#contact">Ask our team</a>
         </aside>
       </section>
 
@@ -224,10 +225,10 @@
 
       <section class="home-contact" id="contact" aria-labelledby="contact-title">
         <div class="home-wrap contact-layout">
-          <div><h2 id="contact-title">Tell us what you need</h2><p>Choose WhatsApp or Gmail. We’ll put your details into a message so you can send it to us.</p></div>
+          <div><h2 id="contact-title">Tell us what you need</h2><p>Send your enquiry right here. Share your number so our team can get back to you.</p></div>
           <div class="home-contact-actions">
-            <a class="home-button home-button-primary" data-enquiry="whatsapp" href="https://wa.me/919680600369">Enquire on WhatsApp</a>
-            <a class="home-button home-button-outline" data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">Enquire by email</a>
+            <a class="home-button home-button-primary" data-enquiry="website" href="mailto:info.hexsec@zohomail.in">Send an enquiry</a>
+            <a class="home-button home-button-outline" data-enquiry="whatsapp" href="https://wa.me/919680600369">Use WhatsApp</a>
             <a class="contact-link" href="tel:+919680600369">Call +91 96806 00369</a>
             <a class="contact-link" href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Get directions</a>
           </div>
@@ -235,7 +236,7 @@
       </section>
     </main>
 
-    <footer class="home-footer"><a class="brand footer-brand" href="#home" aria-label="Hex Security home"><img class="brand-logo" src="hex-security-logo.jpeg" alt="Hex Security logo"></a><div class="footer-contact"><a data-enquiry="gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.hexsec%40zohomail.in">info.hexsec@zohomail.in</a><a href="tel:+919680600369">+91 9680600369</a><a href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Address &amp; directions ↗</a><a href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Hex Security on LinkedIn ↗</a></div><a href="privacy.html">Website privacy</a><span class="copyright">© <span id="year"></span> Hex Security</span></footer>
+    <footer class="home-footer"><a class="brand footer-brand" href="#home" aria-label="Hex Security home"><img class="brand-logo" src="hex-security-logo.jpeg" alt="Hex Security logo"></a><div class="footer-contact"><a data-enquiry="website" href="mailto:info.hexsec@zohomail.in">info.hexsec@zohomail.in</a><a href="tel:+919680600369">+91 9680600369</a><a href="https://maps.app.goo.gl/2YtsyMSwRUSYiVr96" target="_blank" rel="noopener">Address &amp; directions ↗</a><a href="https://www.linkedin.com/company/hex-sec/" target="_blank" rel="noopener noreferrer">Hex Security on LinkedIn ↗</a></div><a href="privacy.html">Website privacy</a><span class="copyright">© <span id="year"></span> Hex Security</span></footer>
   </div>
   <dialog class="enquiry-dialog" id="service-dialog" aria-labelledby="dialog-title">
     <div class="dialog-bar"><span>Hex Security</span><button type="button" class="close-enquiry" aria-label="Close dialog">×</button></div>
@@ -260,14 +261,56 @@
       <label>Mobile number<span class="phone-group"><span>+91</span><input type="tel" name="phone" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{10}" minlength="10" maxlength="10" aria-describedby="phone-help" title="Enter exactly 10 digits without +91" required></span></label>
       <small id="phone-help">Enter 10 digits without the country code.</small>
       <label>City<input name="city" autocomplete="address-level2" maxlength="100" required></label>
-      <div class="compose-actions"><button class="primary-action" type="submit" name="channel" value="whatsapp">Open WhatsApp</button>
-      <button class="secondary-action" type="submit" name="channel" value="gmail">Open Gmail</button></div>
-      <p class="send-note">Review the filled-in message in your chosen app, then press Send.</p>
+      <label>Email for a reply (optional)<input type="email" name="email" autocomplete="email" maxlength="254"></label>
+      <label>What do you need help with? (optional)<textarea name="message" rows="3" maxlength="800"></textarea></label>
+      <div class="compose-actions"><button class="primary-action" type="submit" name="channel" value="website">Send enquiry</button>
+      <button class="secondary-action" type="submit" name="channel" value="whatsapp">Send &amp; open WhatsApp</button></div>
+      <p class="send-note">Your details go to Hex Security so we can reply. Keep passwords and OTPs out of your message. <a href="privacy.html">Website privacy</a></p>
       <p id="enquiry-status" role="status" hidden></p>
       <a id="enquiry-fallback" hidden>Continue in the messaging app</a>
     </form>
   </dialog>
+  <aside id="hex-assistant" class="hex-assistant" aria-label="Hex Security website assistant" hidden>
+    <button type="button" class="hex-launch" id="hex-launch" aria-controls="hex-chat" aria-expanded="false">
+      <span class="hex-robot" aria-hidden="true"><span class="hex-antenna"></span><span class="hex-face"><i></i><i></i><b></b></span></span>
+      <span class="hex-launch-copy"><strong>Ask Hex</strong><small lang="hi">नमस्ते! मदद चाहिए?</small></span>
+    </button>
+    <section class="hex-chat" id="hex-chat" aria-labelledby="hex-chat-title" hidden>
+      <header class="hex-chat-header">
+        <div><h2 id="hex-chat-title">Hex Security assistant</h2><p>Ask in Hindi, Hinglish or English</p></div>
+        <button type="button" id="hex-close" aria-label="Close assistant">×</button>
+      </header>
+      <div class="hex-chat-body">
+        <ol class="hex-messages" id="hex-messages" aria-label="Conversation" aria-live="polite"></ol>
+        <div class="hex-actions" id="hex-actions">
+          <button type="button" data-chat-question="All services">All services</button>
+          <button type="button" data-chat-question="Billing software">Billing</button>
+          <button type="button" data-chat-question="Shop camera">Wi-Fi camera</button>
+          <button type="button" data-chat-question="Cyber security">Cyber security</button>
+        </div>
+        <div class="hex-audio-tools">
+          <button type="button" id="hex-audio" aria-pressed="false">Voice replies off</button>
+          <button type="button" id="hex-replay">Listen to reply</button>
+        </div>
+      </div>
+      <div class="hex-input-area">
+        <form id="hex-question-form">
+          <label class="hex-visually-hidden" for="hex-question">Ask about a service</label>
+          <input id="hex-question" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Type a question…">
+          <button type="submit" class="hex-send">Ask</button>
+        </form>
+        <div class="hex-mic-row" id="hex-mic-row" hidden>
+          <button type="button" id="hex-mic" aria-pressed="false" aria-describedby="hex-voice-note">🎙 Speak</button>
+          <label for="hex-language">Mic language</label>
+          <select id="hex-language"><option value="hi-IN">हिन्दी</option><option value="en-IN">English</option></select>
+        </div>
+        <p class="hex-status" id="hex-status" role="status"></p>
+        <p class="hex-voice-note" id="hex-voice-note">If you use the mic, your browser may process speech online. Keep passwords and OTPs out of chat.</p>
+      </div>
+    </section>
+  </aside>
   <script src="reporting.js"></script>
-  <script src="script.js?v=guide1"></script>
+  <script src="script.js?v=assistant1"></script>
+  <script type="module" src="assistant.js?v=1"></script>
 </body>
 </html>

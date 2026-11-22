@@ -35,8 +35,9 @@ body:has(.enquiry-dialog[open]) { overflow:hidden; }
 #lead-form { display:grid; gap:14px; }
 #back-details { justify-self:start; }
 #lead-form label { display:grid; gap:5px; color:#37383c; font-weight:600; font-size:.95rem; }
-#lead-form input, #lead-form select { font:400 1rem var(--sans); min-height:46px; width:100%; min-width:0;
+#lead-form input, #lead-form select, #lead-form textarea { font:400 1rem var(--sans); min-height:46px; width:100%; min-width:0;
   padding:8px 12px; background:#fff; color:#242528; border:1px solid #bcbcc4; border-radius:5px; }
+#lead-form textarea { resize: vertical; }
 #lead-form select:disabled { opacity:1; color:#29292e; background:#f5f5f6; }
 .phone-group { display:flex; align-items:center; border:1px solid #bcbcc4; border-radius:5px; overflow:hidden; }
 .phone-group > span { padding:0 12px; font-weight:500; }

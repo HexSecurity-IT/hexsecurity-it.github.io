@@ -1,4 +1,5 @@
 import {sheetReport} from './sheet-report.mjs';
+import {mailOutbox} from './mail-outbox.mjs';
 
 const site = 'https://hexsecurity-it.github.io';
 const pages = {
@@ -27,7 +28,7 @@ function reply(status, body) {
 }
 
 async function readBody(request) {
-  const limit = 2048;
+  const limit = 6144;
   if (!request.body || Number(request.headers.get('Content-Length')) > limit) return null;
   const reader = request.body.getReader();
   const bytes = new Uint8Array(limit);
@@ -60,6 +61,7 @@ export default {
   async fetch(request, env) {
     const path = new URL(request.url).pathname;
     if (path === '/sheet-report') return sheetReport(request,env);
+    if (path === '/mail-outbox') return mailOutbox(request,env,readBody);
     if (!['/activity','/enquiries'].includes(path)) return reply(404);
     if (request.headers.get('Origin') !== site) return reply(403);
     if (request.method === 'OPTIONS') return reply(204);
@@ -86,8 +88,19 @@ export default {
       || !/^[0-9]{10}$/.test(data.phone) || data.consent !== true || data.service === 'home'
       || !(data.service === 'general' || Object.hasOwn(pages,data.service))) return reply(400);
     const service = data.service === 'general' ? 'General enquiry' : pages[data.service];
-    await env.DB.prepare('INSERT INTO enquiries (reference,received_ist,service,customer_name,phone,city) VALUES (?,?,?,?,?,?) ON CONFLICT(reference) DO NOTHING')
-      .bind(data.reference,indiaTime.slice(0,19).replace('T',' '),service,name,data.phone,city).run();
+    const enquiry = env.DB.prepare('INSERT INTO enquiries (reference,received_ist,service,customer_name,phone,city) VALUES (?,?,?,?,?,?) ON CONFLICT(reference) DO NOTHING')
+      .bind(data.reference,indiaTime.slice(0,19).replace('T',' '),service,name,data.phone,city);
+    if (data.delivery === 'website') {
+      const email = field(data.email ?? '',254);
+      const message = typeof data.message === 'string' ? data.message.trim() : '';
+      if ((data.email && !/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(email))
+        || message.length > 800 || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/u.test(message)) return reply(400);
+      await env.DB.batch([enquiry, env.DB.prepare(`INSERT INTO enquiry_mail (reference,reply_to,message)
+        SELECT reference,?,? FROM enquiries WHERE reference = ? AND customer_name = ? AND phone = ? AND city = ? AND service = ?
+        ON CONFLICT(reference) DO NOTHING`).bind(email,message,data.reference,name,data.phone,city,service)]);
+    } else {
+      await enquiry.run();
+    }
     return reply(200,{received:true,reference:data.reference});
   }
 };

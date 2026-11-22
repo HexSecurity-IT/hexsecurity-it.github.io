@@ -15,3 +15,13 @@ CREATE TABLE IF NOT EXISTS enquiries (
   city TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS enquiries_by_date ON enquiries (received_ist DESC);
+
+CREATE TABLE IF NOT EXISTS enquiry_mail (
+  reference TEXT PRIMARY KEY REFERENCES enquiries(reference),
+  reply_to TEXT NOT NULL DEFAULT '',
+  message TEXT NOT NULL DEFAULT '',
+  delivered INTEGER NOT NULL DEFAULT 0,
+  lease TEXT,
+  lease_until INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS pending_enquiry_mail ON enquiry_mail (delivered, lease_until);
