@@ -1,6 +1,7 @@
 import {sheetReport} from './sheet-report.mjs';
 import {mailOutbox} from './mail-outbox.mjs';
 import {deliverZohoMail} from './zoho-mail.mjs';
+import {expireCustomerReceipts, queueCustomerReceipt} from './customer-receipts.mjs';
 
 const site = 'https://hexsecurity-it.github.io';
 const pages = {
@@ -60,6 +61,7 @@ function field(value, limit) {
 
 export default {
   async scheduled(_event, env) {
+    await expireCustomerReceipts(env.DB);
     await deliverZohoMail(env);
   },
   async fetch(request, env, ctx) {
@@ -99,10 +101,14 @@ export default {
       const message = typeof data.message === 'string' ? data.message.trim() : '';
       if ((data.email && !/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(email))
         || message.length > 800 || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/u.test(message)) return reply(400);
-      const [, queued] = await env.DB.batch([enquiry, env.DB.prepare(`INSERT INTO enquiry_mail (reference,reply_to,message)
+      const statements = [enquiry, env.DB.prepare(`INSERT INTO enquiry_mail (reference,reply_to,message)
         SELECT reference,?,? FROM enquiries WHERE reference = ? AND customer_name = ? AND phone = ? AND city = ? AND service = ?
-        ON CONFLICT(reference) DO NOTHING`).bind(email,message,data.reference,name,data.phone,city,service)]);
-      if (ctx && env.ZOHO_MAIL_CONFIG && queued.meta.changes === 1) {
+        ON CONFLICT(reference) DO NOTHING`).bind(email,message,data.reference,name,data.phone,city,service)];
+      if (email && email.toLowerCase() !== 'info.hexsec@zohomail.in') {
+        statements.push(await queueCustomerReceipt(env.DB, data.reference, email));
+      }
+      const [, queued, receipt] = await env.DB.batch(statements);
+      if (ctx && env.ZOHO_MAIL_CONFIG && (queued.meta.changes === 1 || receipt?.meta.changes === 1)) {
         ctx.waitUntil(deliverZohoMail(env, data.reference).catch(() => console.warn('Zoho enquiry queued for retry')));
       }
     } else {
