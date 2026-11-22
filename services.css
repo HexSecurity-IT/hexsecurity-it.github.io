@@ -7,9 +7,14 @@
 .offer { position:relative; display:flex; flex-direction:column; min-width:0; background:white;
   border:1px solid #dbdcdf; border-radius:12px; overflow:hidden; }
 .offer:hover, .offer:focus-within { border-color:#be7b86; box-shadow:0 8px 24px #27121a10; }
-.demo { background:#f8f8f7; border-bottom:1px solid #dedee0; }
+.demo { position:relative; overflow:hidden; background:#1c202b; border-bottom:1px solid #dedee0; }
 .inline-video, .demo-large { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; }
-.demo .inline-video { aspect-ratio:800/384; background:#f8f8f7; }
+.demo .inline-video { aspect-ratio:16/9; object-fit:cover; }
+.service-cover-label {
+  position:absolute; inset:auto auto 12px 12px; max-width:calc(100% - 24px);
+  padding:.42rem .68rem; border-radius:7px; background:#171723eb; color:white;
+  font:650 .83rem/1.25 var(--sans); letter-spacing:.01em; pointer-events:none;
+}
 .offer-copy { display:flex; flex-direction:column; align-items:flex-start; gap:.6rem; flex:1; padding:clamp(18px,2vw,30px); }
 .offer-category { color:#a51930; font:700 .78rem var(--sans); letter-spacing:.05em; text-transform:uppercase; }
 .offer h3 { margin:0; color:#202024; font:650 clamp(1.35rem,2vw,1.8rem)/1.18 var(--display); }
