@@ -250,11 +250,11 @@ form.addEventListener('submit', async event => {
   const stamp = JSON.stringify(fields);
   if (receipt?.stamp !== stamp) receipt = {stamp,reference:crypto.randomUUID()};
   const current = receipt;
+  const nextPage = whatsapp ? destination.href : './enquiry-sent.html';
   receiptStatus.hidden = false;
   fallback.hidden = true;
   if (current.completed) {
-    receiptStatus.textContent = 'Hex Security received your enquiry. Our team will get back to you.';
-    if (whatsapp) window.location.assign(destination.href);
+    window.location.assign(nextPage);
     return;
   }
   sending = true;
@@ -265,8 +265,9 @@ form.addEventListener('submit', async event => {
     await sendWebsiteEnquiry({...fields,reference:current.reference});
     if (!modal.open || receipt !== current) return;
     current.completed = true;
-    receiptStatus.textContent = 'Hex Security received your enquiry. Our team will get back to you.';
-    if (whatsapp) window.location.assign(destination.href);
+    receiptStatus.textContent = 'Enquiry sent successfully.';
+    if (!whatsapp) modal.close();
+    window.location.assign(nextPage);
   } catch {
     if (modal.open && receipt === current) {
       receiptStatus.textContent = 'We could not confirm receipt. Retry here or continue on WhatsApp.';
